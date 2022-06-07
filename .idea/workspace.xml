@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FlapQuack.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/entities/Breadcrumb.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/entities/QuackBird.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/game/Music.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/interactions/KeyboardMouseListeners.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/objects/Obstacle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/Frame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/Panel.java" afterDir="false" />
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Started">
+      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Breadcrumb.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/entities/QuackBird.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/game/Music.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/interactions/KeyboardMouseListeners.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/objects/Obstacle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/Frame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/Panel.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,21 +38,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/game" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="FlapQuack" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="flapquack.game.FlapQuack" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="flapquack.game.FlapQuack" />
       <module name="FlapQuack" />
       <extension name="coverage">
@@ -71,7 +67,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FlapQuack" />
+        <item itemvalue="Application.flapquack.game.FlapQuack" />
       </list>
     </recent_temporary>
   </component>
