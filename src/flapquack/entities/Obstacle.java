@@ -10,7 +10,7 @@ public class Obstacle extends Rectangle implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private int x, y, width, height;
-    private final Color testColor = Color.ORANGE.darker();
+    private final Color testColor = Color.GREEN.darker();
     private static final int MAP_BORDER_DX = GameFrame.WIDTH, MAP_BORDER_DOWN = GameFrame.HEIGHT;
 
     public String toString() {

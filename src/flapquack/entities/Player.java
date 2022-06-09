@@ -48,6 +48,18 @@ public class Player extends Rectangle implements Serializable {
         setAlive(true);
     }
 
+    public Player(String playerName, int x, int y, int width, int height) {
+        super();
+        setPlayerName(playerName);
+        setDy(-3.5);
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
+        setJumping(false);
+        setAlive(true);
+    }
+
     public void draw(Graphics g) {
         g.setColor(Color.RED);
         g.fillRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
