@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public final double jumpStart = -1.8;
     private final Thread thread;
     public double fallSpeed = 0.04;
-    public boolean jumping, falling;
+    public boolean jumping, falling, playing;
     double stopJumpSpeed = 0.3;
     private String playerName;
     private Random rng;
@@ -34,15 +34,24 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private int score;
     private double dy;
     private boolean running;
-
+    private final int uccelloInit_X = WIDTH / 2 - 100, uccelloInit_Y = HEIGHT / 2 - 10, uccelloWidth = 30, uccelloHeight = 30;
     public GamePanel(String playerName) {
         super();
         this.playerName = playerName;
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+
         init();
         setFocusable(true);
         setVisible(true);
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 
     @Override
@@ -168,28 +177,26 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     }
 
 
-
-
     public boolean inMezzoAiCoglioni(Rectangle tubo, Rectangle player) {
         int coda = player.x, testa = player.x + player.width;
         int startTubo = tubo.x, endTubo = tubo.x + tubo.width;
 
         if (testa > startTubo && coda < endTubo) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     public void init() {
         grabFocus();
-        uccello = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
+        uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
         rectObstacles = new ArrayList<Rectangle>();
         rng = new Random(System.nanoTime());
         dy = -3.5;
         score = 0;
         setRunning(true);
+        setPlaying(false);
         setGameOver(false);
 
         grabFocus();
@@ -227,6 +234,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         g.setColor(Color.RED);
         g.fillRect(uccello.x, uccello.y, uccello.width, uccello.height);
 
+        if(!isPlaying() || isGameOver()) {
+            if(uccello.x < 0) {
+                uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+            }
+        }
+
         for (Rectangle o : rectObstacles) {
             paintObstacle(g, o);
         }
@@ -237,7 +250,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         if (!isGameStarted()) {
             g.drawString("Clicca o Premi 'Spazio' per Giocare", 150, HEIGHT / 2 - 50);
         }
-        if (isGameOver()) {
+        if (isGameOver() && isPlaying()) {
             g.drawString("Game Over :<", 100, HEIGHT / 2);
         }
         if (!isGameOver() && isGameStarted()) {
@@ -292,12 +305,16 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             addNewObstacle(true);
             addNewObstacle(true);
             jumping = true;
+            setPlaying(true);
             setGameOver(false);
         }
 
         if (!isGameStarted()) {
             //jumping = true;
-            setGameStarted(true);
+            {
+                setGameStarted(true);
+                setPlaying(true);
+            }
         } else if (!isGameOver()) {
             jumping = true;
             //esegue il salto
@@ -421,8 +438,18 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public void keyPressed(KeyEvent e) {
         System.out.println("premuto tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
-            jumping = true;
-            jump();
+            {
+                if (isPlaying() && !isGameOver()) {
+                    jumping = true;
+                    jump();
+                }
+                if (!isPlaying() && !isGameOver()) {
+                    setPlaying(true);
+                    jumping = true;
+                    jump();
+                }
+            }
+
         }
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
             ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
