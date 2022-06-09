@@ -3,10 +3,11 @@ package flapquack.entities;
 import flapquack.ui.GameFrame;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Player extends Rectangle implements Serializable {
+public class Player extends Rectangle2D implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -44,8 +45,10 @@ public class Player extends Rectangle implements Serializable {
         setY(Y_DEFAULT);
         setWidth(WIDTH_DEFAULT);
         setHeight(HEIGHT_DEFAULT);
+        setFrame(this.x, this.y, this.width, this.height);
         setJumping(false);
         setAlive(true);
+
     }
 
     public Player(String playerName, int x, int y, int width, int height) {
@@ -135,6 +138,11 @@ public class Player extends Rectangle implements Serializable {
         return height;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
     public void setHeight(int height) {
         this.height = height;
     }
@@ -170,5 +178,25 @@ public class Player extends Rectangle implements Serializable {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    @Override
+    public void setRect(double x, double y, double w, double h) {
+
+    }
+
+    @Override
+    public int outcode(double x, double y) {
+        return 0;
+    }
+
+    @Override
+    public Rectangle2D createIntersection(Rectangle2D r) {
+        return null;
+    }
+
+    @Override
+    public Rectangle2D createUnion(Rectangle2D r) {
+        return null;
     }
 }

@@ -3,10 +3,11 @@ package flapquack.entities;
 import flapquack.ui.GameFrame;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Obstacle extends Rectangle implements Serializable {
+public class Obstacle extends Rectangle2D implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private int x, y, width, height;
@@ -16,7 +17,7 @@ public class Obstacle extends Rectangle implements Serializable {
     public String toString() {
         String delim = "\t";
         String prop = "X: " + getX() + " Y: " + getY() + " WIDTH: " + getWidth() + " HEIGHT: " + getHeight();
-        return this.getClass().getName() + delim + prop + delim;
+        return "Tubo: " + delim + prop + delim;
     }
 
     public Obstacle(int x, int y, int width, int height) {
@@ -25,7 +26,7 @@ public class Obstacle extends Rectangle implements Serializable {
         setY(y);
         setWidth(width);
         setHeight(height);
-        setBounds(x, y, width, height);
+        setFrame(x, y, width, height);
     }
 
     public void draw(Graphics g) {
@@ -65,7 +66,31 @@ public class Obstacle extends Rectangle implements Serializable {
         return height;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    @Override
+    public void setRect(double x, double y, double w, double h) {
+    }
+
+    @Override
+    public int outcode(double x, double y) {
+        return 0;
+    }
+
+    @Override
+    public Rectangle2D createIntersection(Rectangle2D r) {
+        return null;
+    }
+
+    @Override
+    public Rectangle2D createUnion(Rectangle2D r) {
+        return null;
     }
 }

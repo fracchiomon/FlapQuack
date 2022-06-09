@@ -1,6 +1,7 @@
 package flapquack.ui;
 
 import flapquack.game.FlapQuack;
+import flapquack.game.Music;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public static GamePanel gamePanel;
         private JMenu menu[];
         private JMenuItem menuItem[];
         private String playerName;
+
+        private static Music music;
         //private GameStateManager gsm;
 
         public QuackMenu() {
@@ -32,6 +35,7 @@ public static GamePanel gamePanel;
             //gsm = gameStateManager;
             menu = new JMenu[2];
             menuItem = new JMenuItem[3];
+
 
             for (int m = 0; m < menu.length; m++) {
                 menu[m] = new JMenu(menuText[m]);

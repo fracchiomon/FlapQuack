@@ -66,8 +66,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
 
         while (isRunning()) {
+            rng.setSeed(System.nanoTime());
             //ticks++;
             startTime = System.currentTimeMillis();
+            System.out.println(uccelloOOP.toString());
 
             /*for (Rectangle newObst : rectObstacles) {
                 newObst.x -= movingSpeed;
@@ -79,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
             //if (ticks % 2 == 0 && dy < 15)
 
-            dy += 0.05;
+            //dy += 0.05;
             uccelloOOP.setDy(uccelloOOP.getDy() + 0.05);
 
             /*for (int i = 0; i < rectObstacles.size(); i++) {
@@ -104,9 +106,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 }
             }
 
-            if (jumping) {
+            /*if (jumping) {
                 uccello.y += dy;
-            }
+            }*/
             if(uccelloOOP.isJumping())
                 uccelloOOP.setY((int)(uccelloOOP.getY() + uccelloOOP.getDy()));
 
@@ -131,12 +133,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             for (Obstacle tubo : obstacles) {
                 //player passa attraverso?
                 //collisioni
+                System.out.println(tubo.toString());
+                System.out.println("Interseco? " + tubo.intersects(uccelloOOP.getBounds2D()));
                 if (tubo.intersects(uccelloOOP)) {
                     setGameOver(true);
-                    if (uccelloOOP.getX() <= tubo.getX()) {
+                    if ((int)(uccelloOOP.getX()) <= (int)tubo.getX()) {
                         uccelloOOP.setX((int)(tubo.getX() - uccello.width));
                     } else {
-                        if (tubo.getY() != 0) {
+                        if ((int)tubo.getY() != 0) {
                             uccelloOOP.setY((int) (tubo.getY() - uccello.height));
                         } else if (uccelloOOP.getY() < tubo.getHeight()) {
                             uccelloOOP.setY((int) tubo.getHeight());
@@ -210,6 +214,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             if (uccelloOOP.getY() >= HEIGHT - 120) {
                 setGameOver(true);
                 uccelloOOP.setAlive(false);
+                uccelloOOP.setY(HEIGHT - 122);
             }
             /*//collisione terra includendo lo scostamento dy
             if (uccello.y + dy >= HEIGHT - 120) {
@@ -220,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             if (uccelloOOP.getY() + uccelloOOP.getDy() >= HEIGHT - 120) {
                 setGameOver(true);
                 uccelloOOP.setAlive(false);
-                uccelloOOP.setY((int) (HEIGHT - 120 - uccello.height));
+                uccelloOOP.setY((int) (HEIGHT - 120 - uccelloOOP.getHeight()));
             }
 
             if (uccelloOOP.getY() <= 0) {
@@ -307,30 +312,32 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     private void addNewObstacleOOP(boolean startGame) {
         int spacing = 300;
+        int spacingRand = rng.nextInt(220, 300);
         int width = 100;
+        int widthRand = rng.nextInt(95, 110);
         int height = rng.nextInt(50, 300);
 
         if (startGame) {
-            obstacles.add(new Obstacle(WIDTH + width + obstacles.size() * spacing,
+            obstacles.add(new Obstacle(WIDTH + widthRand + obstacles.size() * spacingRand,
                     HEIGHT - height - 120,
-                    width,
+                    widthRand,
                     height));
 
             obstacles.add(new Obstacle(
-                    WIDTH + width + (obstacles.size() - 1) * spacing,
+                    WIDTH + widthRand + (obstacles.size() - 1) * spacingRand,
                     0,
-                    width,
-                    HEIGHT - height - spacing));
+                    widthRand,
+                    HEIGHT - height - spacingRand));
         }
         else {
-            obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX() + (2*spacing),
+            obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX() + (2*spacingRand),
                     HEIGHT - height - 120,
                     width,
                     height));
             obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX(),
                     0,
-                    width,
-                    HEIGHT - height - spacing));
+                    widthRand,
+                    HEIGHT - height - spacingRand));
         }
     }
     public void addNewObstacle(boolean startGame) {
