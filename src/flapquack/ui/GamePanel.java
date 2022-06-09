@@ -509,15 +509,3 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
 }
 
-
-class Render extends JPanel implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        GameFrame.getGamePanel().paintComponent(g);
-
-    }
-}
