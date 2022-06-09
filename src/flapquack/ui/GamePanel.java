@@ -20,7 +20,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public final double maxFallSpeed = 2.3;
     public final double jumpStart = -1.8;
     private final Thread thread;
-    private final Render render;
     public double fallSpeed = 0.04;
     public boolean jumping, falling;
     double stopJumpSpeed = 0.3;
@@ -34,14 +33,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private boolean gameOver, gameStarted;
     private int score;
     private double dy;
-    private int ticks;
     private boolean running;
 
     public GamePanel(String playerName) {
         super();
         this.playerName = playerName;
         thread = new Thread(this);
-        render = new Render();
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         init();
         setFocusable(true);
@@ -60,8 +57,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             //ticks++;
             startTime = System.currentTimeMillis();
 
-            for (int i = 0; i < rectObstacles.size(); i++) {
-                Rectangle newObst = rectObstacles.get(i);
+            for (Rectangle newObst : rectObstacles) {
                 newObst.x -= speed;
             }
 
@@ -192,7 +188,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         rectObstacles = new ArrayList<Rectangle>();
         rng = new Random(System.nanoTime());
         dy = -3.5;
-        ticks = 0;
         score = 0;
         setRunning(true);
         setGameOver(false);

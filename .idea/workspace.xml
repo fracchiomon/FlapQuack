@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto.">
-      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/QuackMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
