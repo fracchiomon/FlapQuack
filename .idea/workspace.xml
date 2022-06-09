@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Al Momento funziona(leggi:esiste) (più o meno) il menu principale">
-      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/MainPanel.java" afterDir="false" />
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto.">
+      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/QuackMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +53,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Assets/Background" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="flapquack.ui" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="flapquack.game.FlapQuack" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -94,7 +95,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654604655131</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto.">
+      <created>1654774228083</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1654774228083</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,57 +118,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Re-Started" />
-    <option name="LAST_COMMIT_MESSAGE" value="Re-Started" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>81</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>75</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>88</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>90</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>103</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>111</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>115</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/flapquack/ui/GamePanel.java</url>
-          <line>84</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto." />
+    <option name="LAST_COMMIT_MESSAGE" value="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto." />
   </component>
 </project>

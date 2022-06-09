@@ -1,31 +1,35 @@
 package flapquack.ui;
 
-import org.w3c.dom.css.Rect;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-import java.lang.Thread;
-
 public class GamePanel extends JPanel implements Runnable, Serializable, MouseListener, KeyListener {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = GameFrame.WIDTH, HEIGHT = GameFrame.HEIGHT;
-    private static int FPS = 25;
-    private static long targetTime = 1000 / FPS;
+    private static final int FPS = 25;
+    private static final long targetTime = 1000 / FPS;
+    public final double maxFallSpeed = 2.3;
+    public final double jumpStart = -1.8;
+    private final Thread thread;
+    private final Render render;
+    public double fallSpeed = 0.04;
+    public boolean jumping, falling;
+    double stopJumpSpeed = 0.3;
     private String playerName;
     private Random rng;
-    private Thread thread;
-    private Render render;
     //private Player player;
     //private Obstacle obstacle;
     //private ArrayList<Obstacle> obstacleList;
-    private Rectangle rectPlayer;
+    private Rectangle uccello;
     private ArrayList<Rectangle> rectObstacles;
     private boolean gameOver, gameStarted;
     private int score;
@@ -46,12 +50,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     @Override
     public void run() {
+        int coda = uccello.x, testa = uccello.x + uccello.width;
+        boolean inMezzoAllePalle = false;
         long startTime, elapsedTime, waitTime;
-        double speed = 2;
+        int speed = 2;
 
 
         while (isRunning()) {
-            ticks++;
+            //ticks++;
             startTime = System.currentTimeMillis();
 
             for (int i = 0; i < rectObstacles.size(); i++) {
@@ -59,8 +65,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 newObst.x -= speed;
             }
 
-            if (dy < 15)
-                dy = -5;
+            //if (ticks % 2 == 0 && dy < 15)
+
+            dy += 0.05;
 
             for (int i = 0; i < rectObstacles.size(); i++) {
                 Rectangle newObst = rectObstacles.get(i);
@@ -73,44 +80,78 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 }
             }
 
-            if (falling){
-                rectPlayer.y -= dy;
+            if (jumping) {
+                uccello.y += dy;
             }
 
-            for (Rectangle o : rectObstacles) {
+
+            for (Rectangle rectangle : rectObstacles) {
                 //player passa attraverso?
-                if (o.y == 0 && rectPlayer.x + rectPlayer.width / 2 > o.x + o.width / 2 - 10 &&
-                        rectPlayer.x + rectPlayer.width / 2 < o.x + o.width / 2 + 10) {
-                    score = score + 1;
+                /*if (rectangle.y == 0 &&
+                        (rectPlayer.x + rectPlayer.width / 2 > rectangle.x + rectangle.width / 2 - speed
+                        &&
+                        rectPlayer.x + rectPlayer.width / 2 < rectangle.x + rectangle.width / 2 + speed)) {
+                    System.out.println(rectangle.y == 0 + rectangle.y);
+                    System.out.println();
+                    System.out.println(rectPlayer.x + rectPlayer.width / 2 < rectangle.x + rectangle.width / 2 + speed);
+
+                    score++;
                     System.out.println("punteggio: " + score);
-                }
+                }*/
 
                 //collisioni
-                if (o.intersects(rectPlayer)) {
+                if (rectangle.intersects(uccello)) {
                     setGameOver(true);
-                    if (rectPlayer.x <= o.x) {
-                        rectPlayer.x = o.x - rectPlayer.width;
+                    if (uccello.x <= rectangle.x) {
+                        uccello.x = rectangle.x - uccello.width;
                     } else {
-                        if (o.y != 0) {
-                            rectPlayer.y = o.y - rectPlayer.height;
-                        } else if (rectPlayer.y < o.height) {
-                            rectPlayer.y = o.height;
+                        if (rectangle.y != 0) {
+                            uccello.y = rectangle.y - uccello.height;
+                        } else if (uccello.y < rectangle.height) {
+                            uccello.y = rectangle.height;
                         }
                     }
                 }
 
+
             }
-            //collisione con terra
-            if (rectPlayer.y > HEIGHT - 120 || rectPlayer.y < 0) {
+
+            if (!inMezzoAllePalle) {
+                for (Rectangle tubo : rectObstacles) {
+                    if (inMezzoAiCoglioni(tubo, uccello)) {
+                        inMezzoAllePalle = true;
+                        break;
+                    }
+                }
+            }
+
+            if (inMezzoAllePalle) {
+                inMezzoAllePalle = false;
+
+                for (Rectangle rectangle : rectObstacles) {
+                    if (inMezzoAiCoglioni(rectangle, uccello)) {
+                        inMezzoAllePalle = true;
+                        break;
+                    }
+                }
+                if (!inMezzoAllePalle)
+                    score++;
+
+            }
+
+
+            //collisione con terra & cielo
+            if (uccello.y >= HEIGHT - 120)
                 setGameOver(true);
-                rectPlayer.y = HEIGHT - 120 - 20;
-                jumping = false;
-                falling = false;
+            if (uccello.y <= 0) {
+                setGameOver(true);
+                uccello.y = 0;
             }
 
             //collisione col cielo
-            if (rectPlayer.y + dy >= HEIGHT - 120) {
-                rectPlayer.y = HEIGHT - 120 - rectPlayer.height;
+            if (uccello.y + dy >= HEIGHT - 120) {
+                setGameOver(true);
+                uccello.y = HEIGHT - 120 - uccello.height;
             }
             //ridisegno lo schermo
             repaint();
@@ -128,21 +169,35 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 e.printStackTrace();
             }
         }
+    }
 
 
+
+
+    public boolean inMezzoAiCoglioni(Rectangle tubo, Rectangle player) {
+        int coda = player.x, testa = player.x + player.width;
+        int startTubo = tubo.x, endTubo = tubo.x + tubo.width;
+
+        if (testa > startTubo && coda < endTubo) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void init() {
         grabFocus();
-        rectPlayer = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
+        uccello = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
         rectObstacles = new ArrayList<Rectangle>();
         rng = new Random(System.nanoTime());
-        dy = 0;
+        dy = -3.5;
         ticks = 0;
+        score = 0;
         setRunning(true);
         setGameOver(false);
-        jumping = false;
-        falling = false;
+
+        grabFocus();
 
         addMouseListener(this);
         addKeyListener(this);
@@ -175,7 +230,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
         //bird icon
         g.setColor(Color.RED);
-        g.fillRect(rectPlayer.x, rectPlayer.y, rectPlayer.width, rectPlayer.height);
+        g.fillRect(uccello.x, uccello.y, uccello.width, uccello.height);
 
         for (Rectangle o : rectObstacles) {
             paintObstacle(g, o);
@@ -194,7 +249,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
         }
     }
-
 
     public void addNewObstacle(boolean startGame) {
         int spacing = 300;
@@ -230,17 +284,11 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         g.fillRect(obst.x, obst.y, obst.width, obst.height);
     }
 
-    double fallSpeed =0.15;
-    double maxFallSpeed =4.0;
-    double jumpStart =-5.5;
-    boolean jumping, falling;
-    double stopJumpSpeed = 0.3;
-
     public void jump() {
 
         //se è gameOver, saltare fa iniziare una nuova partita
         if (isGameOver()) {
-            rectPlayer = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
+            uccello = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 30, 30);
             rectObstacles.clear();
             dy = 0;
             score = 0;
@@ -253,61 +301,59 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         }
 
         if (!isGameStarted()) {
-            jumping = true;
+            //jumping = true;
             setGameStarted(true);
-        }
-        else if (!isGameOver()) {
+        } else if (!isGameOver()) {
             jumping = true;
             //esegue il salto
             if (jumping) {
                 //System.out.println("Sto salendo: " + tileMap.getType(currRow, currCol));
 
                 dy = jumpStart;
-                if (rectPlayer.y < 0) {
+                if (uccello.y < 0) {
                     dy = 0;
-                    rectPlayer.y = 0;
+                    uccello.y = 0;
                 }
                 //falling = true;
                 //GameState.yOffset = dy;
                 //if (y + dy <= 0) y = 1;
             }
-            jumping = false;
-            falling = true;
+
             // falling
-            if (falling) {
-                System.out.println("Sto cadendo 1");
 
-                if (dy > 0) {
-                    System.out.println("Sto cadendo 3");
+            System.out.println("Sto cadendo 1");
 
-                    dy += fallSpeed;
-                    jumping = false;
-                    if (rectPlayer.y > HEIGHT) {
-                        dy = 0;
-                        rectPlayer.y = HEIGHT;
-                    }
-                    //GameState.yOffset = dy;
+            if (dy > 0) {
+                System.out.println("Sto cadendo 3");
+
+                dy += fallSpeed;
+                //jumping = false;
+                if (uccello.y > HEIGHT) {
+                    dy = 0;
+                    uccello.y = HEIGHT;
                 }
-
-                if (dy < 0 && !jumping) {
-                    System.out.println("Sto cadendo 4");
-
-                    dy += stopJumpSpeed;
-                    if (rectPlayer.y > HEIGHT) {
-                        dy = 0;
-                        rectPlayer.y = HEIGHT;
-                    }
-                    //GameState.yOffset = dy;
-                }
-
-                if (dy > maxFallSpeed) {
-                    //System.out.println("Sto cadendo 5");
-
-                    dy = maxFallSpeed;
-                    //GameState.yOffset = dy;
-                }
-                System.out.println("Sto cadendo 6");
+                //GameState.yOffset = dy;
             }
+
+            if (dy < 0 && !jumping) {
+                System.out.println("Sto cadendo 4");
+
+                dy += stopJumpSpeed;
+                if (uccello.y > HEIGHT) {
+                    dy = 0;
+                    uccello.y = HEIGHT;
+                }
+                //GameState.yOffset = dy;
+            }
+
+            if (dy > maxFallSpeed) {
+                //System.out.println("Sto cadendo 5");
+
+                dy = maxFallSpeed;
+                //GameState.yOffset = dy;
+            }
+            System.out.println("Sto cadendo 6");
+
 
         }
         //System.out.println("Sto salendo: " + tileMap.getType(currRow, currCol));
@@ -331,12 +377,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         this.rng = rng;
     }
 
-    public Rectangle getRectPlayer() {
-        return rectPlayer;
+    public Rectangle getUccello() {
+        return uccello;
     }
 
-    public void setRectPlayer(Rectangle rectPlayer) {
-        this.rectPlayer = rectPlayer;
+    public void setUccello(Rectangle uccello) {
+        this.uccello = uccello;
     }
 
     public ArrayList<Rectangle> getRectObstacles() {
@@ -381,26 +427,31 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         System.out.println("premuto tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
             jumping = true;
-            falling = false;
             jump();
         }
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?");
+            ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+            int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
             if (option == JOptionPane.OK_OPTION) {
                 System.exit(0);
             }
         }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+
+            thread.suspend();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            thread.resume();
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("rilasciato tasto: " + e.getKeyCode()+ e.getKeyChar());
+        System.out.println("rilasciato tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
             //setJumping(false);
-            jumping = false;
-            falling = true;
-            System.out.println("Valore dy: "+ dy);
+            System.out.println("Valore dy: " + dy);
             System.out.println("Lo prendo");
         }
 
@@ -408,7 +459,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        jumping = true;
+
         //falling = false;
         jump();
     }
