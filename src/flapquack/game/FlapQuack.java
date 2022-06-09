@@ -1,7 +1,11 @@
 package flapquack.game;
 import flapquack.ui.GameFrame;
 
-public class FlapQuack {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class FlapQuack implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public static final String TITLE = "FlapQuack";

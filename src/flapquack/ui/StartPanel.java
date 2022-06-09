@@ -23,9 +23,25 @@ public class StartPanel extends JPanel {
     private JLabel title;
     private Image bg;
     private String playerName;
+    private int choice;
+
+
+    public int getChoice() {
+        return choice;
+    }
+
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
 
     public StartPanel() {
         super();
+        setChoice(-1);
+        //JButton invisibleBtn = MainPanel.getInvisibleBtn();
         add(panel1);
         addKeyListener(new KeyAdapter() {
             @Override
@@ -48,18 +64,24 @@ public class StartPanel extends JPanel {
         nuovaPartitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+                //ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
                 playerName = JOptionPane.showInputDialog(StartPanel.this, "Inserisci il tuo nome", "Nuovo Giocatore", JOptionPane.PLAIN_MESSAGE);
                 System.out.println(playerName);
-                panel1.add(new GamePanel(playerName));
-                panel1.revalidate();
+                setChoice(0); //0: nuova partita
+                //MainPanel.clickInvisibleBtn();
+
+                add(new GamePanel(playerName));
+                validate();
             }
         });
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setChoice(1);   //1: help
+                MainPanel.clickInvisibleBtn();
+
                 add(new HelpPanel());
-                revalidate();
+                validate();
             }
         });
         esciButton.addActionListener(new ActionListener() {
@@ -200,7 +222,9 @@ public class StartPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(bg.getScaledInstance(GameFrame.WIDTH, GameFrame.HEIGHT, Image.SCALE_SMOOTH), 0, 0, null);
+        if (choice == 0) {
+
+        }
     }
 }
 

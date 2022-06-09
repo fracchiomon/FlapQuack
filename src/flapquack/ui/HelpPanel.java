@@ -11,7 +11,7 @@ public class HelpPanel extends JPanel implements KeyListener {
     public JOptionPane optionPane;
 
     public HelpPanel() {
-        super(new BorderLayout());
+        super();
     }
 
     @Override
@@ -39,5 +39,10 @@ public class HelpPanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
     }
 }
