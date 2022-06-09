@@ -60,8 +60,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     @Override
     public void run() {
-        int coda = uccello.x, testa = uccello.x + uccello.width;
-        int codaOOP = (int)uccelloOOP.getX(), testaOOP = (int)(uccelloOOP.getX() + uccelloOOP.getWidth());
         boolean inMezzoAllePalle = false;
         long startTime, elapsedTime, waitTime;
         int movingSpeed = 2;
@@ -329,7 +327,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                     HEIGHT - height - 120,
                     width,
                     height));
-            rectObstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX(),
+            obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX(),
                     0,
                     width,
                     HEIGHT - height - spacing));
@@ -575,14 +573,42 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         System.out.println("premuto tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
             {
+                //se è gameOver, saltare fa iniziare una nuova partita
+                if (isGameOver()) {
+                    uccelloOOP = new Player(playerName);
+                    obstacles.clear();
+                    uccelloOOP.setDy(0);
+                    score = 0;
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    jumping = true;
+                    uccelloOOP.setJumping(true);
+                    setPlaying(true);
+                    uccelloOOP.setAlive(true);
+                    setGameOver(false);
+                }
+
+                if (!isGameStarted()) {
+                    //jumping = true;
+                    {
+                        setGameStarted(true);
+                        setPlaying(true);
+                        uccelloOOP.setAlive(true);
+                    }
+                }
                 if (isPlaying() && !isGameOver()) {
                     jumping = true;
-                    jump();
+                    uccelloOOP.setJumping(true);
+                    uccelloOOP.jump();
                 }
                 if (!isPlaying() && !isGameOver()) {
                     setPlaying(true);
+                    uccelloOOP.setAlive(true);
                     jumping = true;
-                    jump();
+                    uccelloOOP.setJumping(true);
+                    uccelloOOP.jump();
                 }
             }
 
@@ -619,7 +645,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public void mouseClicked(MouseEvent e) {
 
         //falling = false;
-        jump();
+        uccelloOOP.jump();
     }
 
     @Override

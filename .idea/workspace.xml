@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Ho iniziato la OOP implementation. Classi Player e Obstacle.">
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Continua l'implementazione OOP all'interno di GamePanel.java - TODO: aggiustare il jump usando la funzione di Player.java e i Listeners; aggiustare la gestione dei GamePanel; implementare musica; pulizia generale e commenti">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -115,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654804477284</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Continua l'implementazione OOP all'interno di GamePanel.java - TODO: aggiustare il jump usando la funzione di Player.java e i Listeners; aggiustare la gestione dei GamePanel; implementare musica; pulizia generale e commenti">
+      <created>1654808955546</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1654808955546</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -134,6 +139,7 @@
     <MESSAGE value="devo rimettere il menu principale e capire come gestire la transizione tra pannelli, tuttavia il gioco PIU o meno funziona ma non funziona ancora il salto." />
     <MESSAGE value="funzia." />
     <MESSAGE value="Ho iniziato la OOP implementation. Classi Player e Obstacle." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ho iniziato la OOP implementation. Classi Player e Obstacle." />
+    <MESSAGE value="Continua l'implementazione OOP all'interno di GamePanel.java - TODO: aggiustare il jump usando la funzione di Player.java e i Listeners; aggiustare la gestione dei GamePanel; implementare musica; pulizia generale e commenti" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continua l'implementazione OOP all'interno di GamePanel.java - TODO: aggiustare il jump usando la funzione di Player.java e i Listeners; aggiustare la gestione dei GamePanel; implementare musica; pulizia generale e commenti" />
   </component>
 </project>
