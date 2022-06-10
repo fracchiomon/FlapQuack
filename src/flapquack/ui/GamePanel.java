@@ -2,6 +2,7 @@ package flapquack.ui;
 
 import flapquack.entities.Obstacle;
 import flapquack.entities.Player;
+import flapquack.game.Music;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private double dy;
     private boolean running;
     private ArrayList<Obstacle> obstacles;
+    final Music music = GameFrame.getMusic();
+
     private final int uccelloInit_X = WIDTH / 2 - 100, uccelloInit_Y = HEIGHT / 2 - 10, uccelloWidth = 30, uccelloHeight = 30;
     public GamePanel(String playerName) {
         super();
@@ -62,7 +65,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public void run() {
         boolean inMezzoAllePalle = false;
         long startTime, elapsedTime, waitTime;
-        int movingSpeed = 2;
+        double movingSpeed = 1.5;
+
 
 
         while (isRunning()) {
@@ -70,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             //ticks++;
             startTime = System.currentTimeMillis();
             System.out.println(uccelloOOP.toString());
+            System.out.println(music.clip.getFramePosition());
 
             /*for (Rectangle newObst : rectObstacles) {
                 newObst.x -= movingSpeed;
@@ -279,6 +284,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     Player uccelloOOP;
     public void init() {
         grabFocus();
+
         //uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
         uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
         //rectObstacles = new ArrayList<Rectangle>();
@@ -306,14 +312,21 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         addNewObstacleOOP(true);
         addNewObstacleOOP(true);
 
-
+        int musStart = 0, musEnd = 382, loopStartSeconds = 35;
+        int frameLength = GameFrame.getMusic().clip.getFrameLength();   // length in frames
+        long duration = GameFrame.getMusic().clip.getMicrosecondLength();   // length in microseconds
+        int durationSeconds = (int) (duration/1000000);
+        int loopEnd = 5534000;
+        music.clip.setFramePosition(1591000);
+        music.clip.start();
+        music.clip.setLoopPoints(1590000, loopEnd);
         thread.start();
 
     }
 
     private void addNewObstacleOOP(boolean startGame) {
         int spacing = 300;
-        int spacingRand = rng.nextInt(220, 300);
+        int spacingRand = rng.nextInt(250, 300);
         int width = 100;
         int widthRand = rng.nextInt(95, 110);
         int height = rng.nextInt(50, 300);
@@ -322,23 +335,23 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             obstacles.add(new Obstacle(WIDTH + widthRand + obstacles.size() * spacingRand,
                     HEIGHT - height - 120,
                     widthRand,
-                    height));
+                    height, false));
 
             obstacles.add(new Obstacle(
                     WIDTH + widthRand + (obstacles.size() - 1) * spacingRand,
                     0,
                     widthRand,
-                    HEIGHT - height - spacingRand));
+                    HEIGHT - height - spacingRand, true));
         }
         else {
             obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX() + (2*spacingRand),
                     HEIGHT - height - 120,
                     width,
-                    height));
+                    height, false));
             obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX(),
                     0,
                     widthRand,
-                    HEIGHT - height - spacingRand));
+                    HEIGHT - height - spacingRand, true));
         }
     }
    /* public void addNewObstacle(boolean startGame) {
@@ -626,6 +639,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
             if (option == JOptionPane.OK_OPTION) {
+                music.clip.stop();
                 System.exit(0);
             }
         }

@@ -2,6 +2,7 @@ package flapquack.entities;
 
 import flapquack.ui.GameFrame;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.Serial;
@@ -23,6 +24,8 @@ public class Player extends Rectangle2D implements Serializable {
     private int x, y, width, height;
     private boolean alive, jumping;
     private String playerName;
+    private Image sprite;
+    private final String spritePath = "Assets/Sprites/player.png";
 
     @Override
     public String toString() {
@@ -45,7 +48,8 @@ public class Player extends Rectangle2D implements Serializable {
         setY(Y_DEFAULT);
         setWidth(WIDTH_DEFAULT);
         setHeight(HEIGHT_DEFAULT);
-        setFrame(this.x, this.y, this.width, this.height);
+        setFrame(this.x, this.y, this.width + 40, this.height + 40);
+        sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         setJumping(false);
         setAlive(true);
 
@@ -60,12 +64,22 @@ public class Player extends Rectangle2D implements Serializable {
         setWidth(width);
         setHeight(height);
         setJumping(false);
+        setFrame(this.x, this.y, this.width + 40, this.height + 40);
+
+        sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+
         setAlive(true);
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
+        try {
+            g.drawImage(sprite, this.x, this.y, null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*g.setColor(Color.RED);
+        g.fillRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());*/
     }
 
     public void jump() {

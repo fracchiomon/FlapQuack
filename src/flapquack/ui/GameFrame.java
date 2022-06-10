@@ -26,8 +26,6 @@ public static GamePanel gamePanel;
         private JMenu menu[];
         private JMenuItem menuItem[];
         private String playerName;
-
-        private static Music music;
         //private GameStateManager gsm;
 
         public QuackMenu() {
@@ -86,6 +84,15 @@ public static GamePanel gamePanel;
         }
     }
 
+    private static Music music;
+
+    public static Music getMusic() {
+        return music;
+    }
+
+    public static void setMusic(Music musica) {
+        music = musica;
+    }
     public GameFrame() {
         super(title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -93,6 +100,8 @@ public static GamePanel gamePanel;
         setResizable(false);
         setTitle(title);
         menu = new QuackMenu();
+        music = new Music("Assets/Music/monty_on_the_run.wav");
+
         setJMenuBar(menu);
         MainPanel mainPanel = new MainPanel();
         GamePanel gamePanel = new GamePanel("Fracchio");
