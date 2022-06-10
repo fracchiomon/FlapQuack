@@ -20,19 +20,19 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private static final int WIDTH = GameFrame.WIDTH, HEIGHT = GameFrame.HEIGHT;
     private static final int FPS = 25;
     private static final long targetTime = 1000 / FPS;
-    public final double maxFallSpeed = 2.3;
-    public final double jumpStart = -1.8;
+    /*public final double maxFallSpeed = 2.3;
+    public final double jumpStart = -1.8;*/
     private final Thread thread;
-    public double fallSpeed = 0.04;
-    public boolean jumping, falling, playing;
-    double stopJumpSpeed = 0.3;
+    //public double fallSpeed = 0.04;
+    public boolean jumping, playing;
+    //double stopJumpSpeed = 0.3;
     private String playerName;
     private Random rng;
     //private Player player;
     //private Obstacle obstacle;
     //private ArrayList<Obstacle> obstacleList;
-    private Rectangle uccello;
-    private ArrayList<Rectangle> rectObstacles;
+    /*private Rectangle uccello;
+    private ArrayList<Rectangle> rectObstacles;*/
     private boolean gameOver, gameStarted;
     private int score;
     private double dy;
@@ -138,10 +138,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 if (tubo.intersects(uccelloOOP)) {
                     setGameOver(true);
                     if ((int)(uccelloOOP.getX()) <= (int)tubo.getX()) {
-                        uccelloOOP.setX((int)(tubo.getX() - uccello.width));
+                        uccelloOOP.setX((int)(tubo.getX() - uccelloOOP.getWidth()));
                     } else {
                         if ((int)tubo.getY() != 0) {
-                            uccelloOOP.setY((int) (tubo.getY() - uccello.height));
+                            uccelloOOP.setY((int) (tubo.getY() - uccelloOOP.getHeight()));
                         } else if (uccelloOOP.getY() < tubo.getHeight()) {
                             uccelloOOP.setY((int) tubo.getHeight());
                         }
@@ -211,10 +211,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             }
 */
             //collisioni terra/cielo OOP
-            if (uccelloOOP.getY() >= HEIGHT - 120) {
+            if (uccelloOOP.getY() >= HEIGHT - 120 - uccelloOOP.getHeight()) {
                 setGameOver(true);
                 uccelloOOP.setAlive(false);
-                uccelloOOP.setY(HEIGHT - 122);
+                uccelloOOP.setY((int)(HEIGHT - 120 - uccelloOOP.getHeight()));
             }
             /*//collisione terra includendo lo scostamento dy
             if (uccello.y + dy >= HEIGHT - 120) {
@@ -225,6 +225,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             if (uccelloOOP.getY() + uccelloOOP.getDy() >= HEIGHT - 120) {
                 setGameOver(true);
                 uccelloOOP.setAlive(false);
+                uccelloOOP.setDy(0);
                 uccelloOOP.setY((int) (HEIGHT - 120 - uccelloOOP.getHeight()));
             }
 
@@ -278,9 +279,9 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     Player uccelloOOP;
     public void init() {
         grabFocus();
-        uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+        //uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
         uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
-        rectObstacles = new ArrayList<Rectangle>();
+        //rectObstacles = new ArrayList<Rectangle>();
         obstacles = new ArrayList<Obstacle>();
         rng = new Random(System.nanoTime());
         dy = -3.5;
@@ -340,7 +341,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                     HEIGHT - height - spacingRand));
         }
     }
-    public void addNewObstacle(boolean startGame) {
+   /* public void addNewObstacle(boolean startGame) {
         int spacing = 300;
         int width = 100;
         int height = rng.nextInt(50, 300);
@@ -367,7 +368,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                     width,
                     HEIGHT - height - spacing));
         }
-    }
+    }*/
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -433,7 +434,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         g.fillRect(obst.x, obst.y, obst.width, obst.height);
     }*/
 
-    public void jump() {
+    /*public void jump() {
 
         //se è gameOver, saltare fa iniziare una nuova partita
         if (isGameOver()) {
@@ -512,7 +513,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         //System.out.println("Sto salendo: " + tileMap.getType(currRow, currCol));
 
 
-    }
+    }*/
 
     public String getPlayerName() {
         return playerName;
@@ -530,7 +531,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         this.rng = rng;
     }
 
-    public Rectangle getUccello() {
+   /* public Rectangle getUccello() {
         return uccello;
     }
 
@@ -544,7 +545,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     public void setRectObstacles(ArrayList<Rectangle> rectObstacles) {
         this.rectObstacles = rectObstacles;
-    }
+    }*/
 
     public boolean isGameOver() {
         return gameOver;
@@ -590,7 +591,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                     addNewObstacleOOP(true);
                     addNewObstacleOOP(true);
                     addNewObstacleOOP(true);
-                    jumping = true;
+                    //jumping = true;
                     uccelloOOP.setJumping(true);
                     setPlaying(true);
                     uccelloOOP.setAlive(true);
@@ -606,14 +607,14 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                     }
                 }
                 if (isPlaying() && !isGameOver()) {
-                    jumping = true;
+                    //jumping = true;
                     uccelloOOP.setJumping(true);
                     uccelloOOP.jump();
                 }
                 if (!isPlaying() && !isGameOver()) {
                     setPlaying(true);
                     uccelloOOP.setAlive(true);
-                    jumping = true;
+                    //jumping = true;
                     uccelloOOP.setJumping(true);
                     uccelloOOP.jump();
                 }
