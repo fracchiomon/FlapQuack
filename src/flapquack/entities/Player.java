@@ -12,34 +12,30 @@ public class Player extends Rectangle2D implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //confini dello schermo
     private static final int MAP_BORDER_DX = GameFrame.WIDTH;
     private static final int MAP_BORDER_DOWN = GameFrame.HEIGHT;
+
+    //costanti di default per un'inizializzazione base del Player
     private final int X_DEFAULT = MAP_BORDER_DX / 2 - 100, Y_DEFAULT = MAP_BORDER_DOWN / 2 - 10;
     private final int WIDTH_DEFAULT = 30, HEIGHT_DEFAULT = 30;
     private final double maxFallSpeed = 2.3;
     private final double jumpStart = -1.8;
     private final double fallSpeed = 0.04;
     private final double stopJumpSpeed = 0.3;
+
+    //Location del file Immagine
+    private final String spritePath = "Assets/Sprites/player.png";
+
+    //spostamento verticale
     private double dy;
+    //coordinate e dimensioni
     private int x, y, width, height;
     private boolean alive, jumping;
     private String playerName;
-    private Image sprite;
-    private final String spritePath = "Assets/Sprites/player.png";
+    private final Image sprite;
 
-    @Override
-    public String toString() {
-        String nome = "Player: " + getPlayerName();
-        String prop = "X: " + getX() + " Y: " + getY() + " WIDTH: " + getWidth() + " HEIGHT: " + getHeight();
-        String vivo;
-        if(isAlive())
-            vivo = "Sono vivo";
-        else
-            vivo = "Sono morto";
-        String delim = "\t";
-        return nome + delim + prop + delim + vivo + delim;
-    }
-
+    //costruttore senza parametri coordinate/dimensioni -> inizializza con costanti default
     public Player(String playerName) {
         super();
         setPlayerName(playerName);
@@ -48,13 +44,14 @@ public class Player extends Rectangle2D implements Serializable {
         setY(Y_DEFAULT);
         setWidth(WIDTH_DEFAULT);
         setHeight(HEIGHT_DEFAULT);
-        setFrame(this.x, this.y, this.width - this.width/5, this.height - this.height/5);
+        setFrame(this.x, this.y, this.width + this.width / 1.2, this.height - this.height / 5);
         sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         setJumping(false);
         setAlive(true);
 
     }
 
+    //costruttore con parametri coordinate/dimensioni
     public Player(String playerName, int x, int y, int width, int height) {
         super();
         setPlayerName(playerName);
@@ -64,32 +61,47 @@ public class Player extends Rectangle2D implements Serializable {
         setWidth(width);
         setHeight(height);
         setJumping(false);
-        setFrame(this.x, this.y, this.width - this.width/5, this.height - this.height/5);
+        setFrame(this.x, this.y, this.width - this.width / 1.2, this.height - this.height / 5);
 
         sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
 
         setAlive(true);
     }
 
+    //metodo toString custom
+    @Override
+    public String toString() {
+        String nome = "Player: " + getPlayerName();
+        String prop = "X: " + getX() + " Y: " + getY() + " WIDTH: " + getWidth() + " HEIGHT: " + getHeight();
+        String vivo;
+        if (isAlive()) vivo = "Sono vivo";
+        else vivo = "Sono morto";
+        String delim = "\t";
+        return nome + delim + prop + delim + vivo + delim;
+    }
+
+    //metodo chiamato dalla paintComponent per disegnare l'oggetto Player
     public void draw(Graphics g) {
         try {
             g.drawImage(sprite, this.x, this.y, null);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         /*g.setColor(Color.RED);
         g.fillRect((int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());*/
     }
 
+    //metodo per il salto
     public void jump() {
+        //se è "morto" reinizializza le variabili saltando -> inizia una nuova partita
         if (!isAlive()) {
             dy = 0;
             setJumping(true);
             setAlive(true);
         }
         setJumping(true);
-        //salto
+
+        //fase iniziale del salto -> dy assume valore negativo per effettuare la salita
         dy = jumpStart;
         //check collisione con il soffitto
         if (this.y < 0) {
@@ -120,6 +132,7 @@ public class Player extends Rectangle2D implements Serializable {
         }
     }
 
+    //metodi GET e SET
     @Override
     public double getX() {
         return x;
@@ -152,15 +165,14 @@ public class Player extends Rectangle2D implements Serializable {
         return height;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
     public void setHeight(int height) {
         this.height = height;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
     public double getDy() {
         return dy;
@@ -194,6 +206,7 @@ public class Player extends Rectangle2D implements Serializable {
         this.playerName = playerName;
     }
 
+    //metodi ereditati da Rectangle2D che non sono stati implementati
     @Override
     public void setRect(double x, double y, double w, double h) {
 

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="più o meno le immagini ci sono. piccolo bug non invasivo il fatto che con le immagini, gli ostacoli a bordo SX della mappa rallentano prima di scomparire.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli.">
-      <change afterPath="$PROJECT_DIR$/Assets/Background/bg.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Sprites/brick.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Sprites/grass.png" afterDir="false" />
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores.">
+      <change afterPath="$PROJECT_DIR$/Assets/Sounds/honk.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HighScores.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HighScores.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/flapquack/game/SoundFX.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Background/bg.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Background/bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/game/Music.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/Music.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,15 +45,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game",
-    "settings.editor.selected.configurable": "project.propGUI"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propGUI&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/game" />
@@ -157,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654859141680</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores.">
+      <created>1654868093616</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1654868093616</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,6 +191,7 @@
     <MESSAGE value="UPDATE: l'implementazione OOP è un successo.&#10;TODO: aggiustare la gestione dei GamePanel; implementare musica; pulizia generale e commenti" />
     <MESSAGE value="UPDATE: inizio implementazione musica&#10;TODO: aggiustare la gestione dei GamePanel; pulizia generale e commenti" />
     <MESSAGE value="più o meno le immagini ci sono. piccolo bug non invasivo il fatto che con le immagini, gli ostacoli a bordo SX della mappa rallentano prima di scomparire.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli." />
-    <option name="LAST_COMMIT_MESSAGE" value="più o meno le immagini ci sono. piccolo bug non invasivo il fatto che con le immagini, gli ostacoli a bordo SX della mappa rallentano prima di scomparire.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli." />
+    <MESSAGE value="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores." />
+    <option name="LAST_COMMIT_MESSAGE" value="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores." />
   </component>
 </project>

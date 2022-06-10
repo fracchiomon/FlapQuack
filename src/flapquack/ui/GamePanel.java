@@ -3,6 +3,7 @@ package flapquack.ui;
 import flapquack.entities.Obstacle;
 import flapquack.entities.Player;
 import flapquack.game.Music;
+import flapquack.game.SoundFX;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +11,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable, Serializable, MouseListener, KeyListener {
@@ -21,16 +23,24 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private static final int WIDTH = GameFrame.WIDTH, HEIGHT = GameFrame.HEIGHT;
     private static final int FPS = 25;
     private static final long targetTime = 1000 / FPS;
+    public static double movingSpeed = 1.5;
+    protected final ArrayList<Integer> scores = new ArrayList<Integer>();
+    final Music music = GameFrame.getMusic();
     /*public final double maxFallSpeed = 2.3;
     public final double jumpStart = -1.8;*/
     private final Thread thread;
+    private final int uccelloInit_X = WIDTH / 2 - 100, uccelloInit_Y = HEIGHT / 2 - 10, uccelloWidth = 25, uccelloHeight = 25;
+    private final String bg_Path = "Assets/Background/bg.gif";
+    private final SoundFX secretFX = new SoundFX("Assets/Sounds/honk.wav");
     //public double fallSpeed = 0.04;
     public boolean jumping, playing;
+    protected Hashtable<Integer, String> PlayerScores;
+    Player uccelloOOP;
+    int pauseFrame = 0;
     //double stopJumpSpeed = 0.3;
     private String playerName;
     private Random rng;
     private Image bg, ground, grass;
-    private String bg_Path = "Assets/Background/bg.gif";
     //private Player player;
     //private Obstacle obstacle;
     //private ArrayList<Obstacle> obstacleList;
@@ -41,18 +51,37 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     private double dy;
     private boolean running;
     private ArrayList<Obstacle> obstacles;
-    final Music music = GameFrame.getMusic();
 
-    private final int uccelloInit_X = WIDTH / 2 - 100, uccelloInit_Y = HEIGHT / 2 - 10, uccelloWidth = 25, uccelloHeight = 25;
+    public GamePanel() {
+        super();
+        //this.playerName = playerName;
+        thread = new Thread(this);
+        setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+        uccelloOOP = new Player("New Player", uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+        PlayerScores = new Hashtable<Integer, String>();
+
+
+        init();
+        setFocusable(true);
+        setVisible(true);
+
+    }
+
+    //costruttore con nome in ingresso
     public GamePanel(String playerName) {
         super();
         this.playerName = playerName;
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+        uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+        PlayerScores = new Hashtable<Integer, String>();
+        //scores = new ArrayList<Integer>();
 
         init();
         setFocusable(true);
         setVisible(true);
+        //nuovoNome();
+
     }
 
     public boolean isPlaying() {
@@ -67,12 +96,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public void run() {
         boolean inMezzoAllePalle = false;
         long startTime, elapsedTime, waitTime;
-        double movingSpeed = 1.5;
 
-
-
+        //loop di gioco
         while (isRunning()) {
-            rng.setSeed(System.nanoTime());
+
             //ticks++;
             startTime = System.currentTimeMillis();
             System.out.println(uccelloOOP.toString());
@@ -82,8 +109,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 newObst.x -= movingSpeed;
             }*/
 
-            for(Obstacle tubo : obstacles) {
-                tubo.setX((int)(tubo.getX() - movingSpeed));
+            for (Obstacle tubo : obstacles) {
+                tubo.setX((int) (tubo.getX() - movingSpeed));
             }
 
             //if (ticks % 2 == 0 && dy < 15)
@@ -116,8 +143,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             /*if (jumping) {
                 uccello.y += dy;
             }*/
-            if(uccelloOOP.isJumping())
-                uccelloOOP.setY((int)(uccelloOOP.getY() + uccelloOOP.getDy()));
+            if (uccelloOOP.isJumping()) uccelloOOP.setY((int) (uccelloOOP.getY() + uccelloOOP.getDy()));
 
 
             /*for (Rectangle rectangle : rectObstacles) {
@@ -144,10 +170,12 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 System.out.println("Interseco? " + tubo.intersects(uccelloOOP.getBounds2D()));
                 if (tubo.intersects(uccelloOOP)) {
                     setGameOver(true);
-                    if ((int)(uccelloOOP.getX()) <= (int)tubo.getX()) {
-                        uccelloOOP.setX((int)(tubo.getX() - uccelloOOP.getWidth()));
+                    movingSpeed = 0;
+                    //Scrittura();
+                    if ((int) (uccelloOOP.getX()) <= (int) tubo.getX()) {
+                        uccelloOOP.setX((int) (tubo.getX() - uccelloOOP.getWidth() - uccelloOOP.getWidth() / 1.2));
                     } else {
-                        if ((int)tubo.getY() != 0) {
+                        if ((int) tubo.getY() != 0) {
                             uccelloOOP.setY((int) (tubo.getY() - uccelloOOP.getHeight()));
                         } else if (uccelloOOP.getY() < tubo.getHeight()) {
                             uccelloOOP.setY((int) tubo.getHeight());
@@ -197,8 +225,7 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                         break;
                     }
                 }
-                if (!inMezzoAllePalle)
-                    score++;
+                if (!inMezzoAllePalle) score++;
 
             }
 
@@ -220,8 +247,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             //collisioni terra/cielo OOP
             if (uccelloOOP.getY() >= HEIGHT - 120 - uccelloOOP.getHeight() - 40) {
                 setGameOver(true);
+                //Scrittura();
                 uccelloOOP.setAlive(false);
-                uccelloOOP.setY((int)(HEIGHT - 120 - uccelloOOP.getHeight() - 40));
+                movingSpeed = 0;
+                uccelloOOP.setY((int) (HEIGHT - 120 - uccelloOOP.getHeight() - 40));
             }
             /*//collisione terra includendo lo scostamento dy
             if (uccello.y + dy >= HEIGHT - 120) {
@@ -229,15 +258,18 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 uccello.y = HEIGHT - 120 - uccello.height;
             }*/
             //collisione terra includendo lo scostamento dy - OOP
-            if (uccelloOOP.getY() + uccelloOOP.getDy() >= HEIGHT - 120- uccelloOOP.getHeight() - 40) {
+            if (uccelloOOP.getY() + uccelloOOP.getDy() >= HEIGHT - 120 - uccelloOOP.getHeight() - 40) {
                 setGameOver(true);
+                movingSpeed = 0;
+                //Scrittura();
                 uccelloOOP.setAlive(false);
                 uccelloOOP.setDy(0);
-                uccelloOOP.setY((int) (HEIGHT - 120 - uccelloOOP.getHeight()- 40));
+                uccelloOOP.setY((int) (HEIGHT - 120 - uccelloOOP.getHeight() - 40));
             }
 
             if (uccelloOOP.getY() <= 0) {
                 setGameOver(true);
+                movingSpeed = 0;
                 uccelloOOP.setAlive(false);
                 uccelloOOP.setY(0);
             }
@@ -261,47 +293,48 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         }
     }
 
-
     public boolean inMezzoAiCoglioni(Rectangle tubo, Rectangle player) {
         int coda = player.x, testa = player.x + player.width;
         int startTubo = tubo.x, endTubo = tubo.x + tubo.width;
 
-        if (testa > startTubo && coda < endTubo) {
-            return true;
-        } else {
-            return false;
-        }
+        return testa > startTubo && coda < endTubo;
     }
+
     public boolean inMezzoAiCoglioniOOP(Obstacle tubo, Player player) {
-        int coda = (int)player.getX(), testa = (int)(player.getX() + player.getWidth());
-        int startTubo = (int)tubo.getX(), endTubo = (int)(tubo.getX()+ tubo.getWidth());
+        int coda = (int) player.getX(), testa = (int) (player.getX() + player.getWidth());
+        int startTubo = (int) tubo.getX(), endTubo = (int) (tubo.getX() + tubo.getWidth());
 
-        if (testa > startTubo && coda < endTubo) {
-            return true;
-        } else {
-            return false;
-        }
+        return testa > startTubo && coda < endTubo;
     }
 
-    Player uccelloOOP;
+    //inizializza i primi Ostacoli, il punteggio
+    public void startGame() {
+        //dy = -3.5;
+        //seed del Random Generator
+        rng.setSeed(System.nanoTime());
+        movingSpeed = 1.5;
+        score = 0;
+        setPlaying(false);
+        setGameOver(false);
+        addNewObstacleOOP(true);
+        addNewObstacleOOP(true);
+        addNewObstacleOOP(true);
+        addNewObstacleOOP(true);
+    }
+
     public void init() {
         grabFocus();
 
         //uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
-        uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
         //rectObstacles = new ArrayList<Rectangle>();
-        obstacles = new ArrayList<Obstacle>();
-        rng = new Random(System.nanoTime());
-        dy = -3.5;
-        score = 0;
-        bg = new ImageIcon(bg_Path).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        ground = new ImageIcon("Assets/Sprites/brick.png").getImage().getScaledInstance(30, 30,Image.SCALE_SMOOTH);
-        grass = new ImageIcon("Assets/Sprites/grass.png").getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
-        setRunning(true);
-        setPlaying(false);
-        setGameOver(false);
 
-        grabFocus();
+        rng = new Random(System.nanoTime());
+        obstacles = new ArrayList<Obstacle>();
+
+        bg = new ImageIcon(bg_Path).getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        ground = new ImageIcon("Assets/Sprites/brick.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        grass = new ImageIcon("Assets/Sprites/grass.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        setRunning(true);
 
         addMouseListener(this);
         addKeyListener(this);
@@ -312,52 +345,19 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         addNewObstacle(true);
         addNewObstacle(true);
         addNewObstacle(true);*/
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
+
 
         int musStart = 0, musEnd = 382, loopStartSeconds = 35;
         int frameLength = GameFrame.getMusic().clip.getFrameLength();   // length in frames
         long duration = GameFrame.getMusic().clip.getMicrosecondLength();   // length in microseconds
-        int durationSeconds = (int) (duration/1000000);
+        int durationSeconds = (int) (duration / 1000000);
         int loopEnd = 5534000;
         music.clip.setFramePosition(1591000);
         music.clip.start();
         music.clip.setLoopPoints(1590000, loopEnd);
+
         thread.start();
 
-    }
-
-    private void addNewObstacleOOP(boolean startGame) {
-        int spacing = 300;
-        int spacingRand = rng.nextInt(250, 300);
-        int width = 100;
-        int widthRand = rng.nextInt(95, 110);
-        int height = rng.nextInt(50, 300);
-
-        if (startGame) {
-            obstacles.add(new Obstacle(WIDTH + widthRand + obstacles.size() * spacingRand,
-                    HEIGHT - height - 120,
-                    widthRand,
-                    height, false));
-
-            obstacles.add(new Obstacle(
-                    WIDTH + widthRand + (obstacles.size() - 1) * spacingRand,
-                    0,
-                    widthRand,
-                    HEIGHT - height - spacingRand, true));
-        }
-        else {
-            obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX() + (2*spacingRand),
-                    HEIGHT - height - 120,
-                    width,
-                    height, false));
-            obstacles.add(new Obstacle((int)obstacles.get(obstacles.size() - 1).getX(),
-                    0,
-                    widthRand,
-                    HEIGHT - height - spacingRand, true));
-        }
     }
    /* public void addNewObstacle(boolean startGame) {
         int spacing = 300;
@@ -388,78 +388,21 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         }
     }*/
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        g.clearRect(0, 0, WIDTH, HEIGHT);
-        //Background
-        /*g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, GameFrame.WIDTH, GameFrame.HEIGHT);*/
-        try {
-            g.drawImage(bg, 0,0, WIDTH, HEIGHT,null);
-            //ground
-            /*g.setColor(Color.ORANGE.darker());
-            g.fillRect(0, HEIGHT - 120, WIDTH, 120);
-*/
-            for(int i = 0; i < WIDTH; i += 30) {
-                for(int j = HEIGHT - 120 + 20; j < HEIGHT; j += 30) {
-                    g.drawImage(ground, i,j, 30, 30, null);
-                }
-            }
-            //grass
-            /*g.setColor(Color.GREEN);
-            g.fillRect(0, HEIGHT - 120, WIDTH, 20);*/
-            for (int i = 0; i < WIDTH; i += 20) {
-                g.drawImage(grass, i,HEIGHT - 120,null);
-            }
+    private void addNewObstacleOOP(boolean startGame) {
+        int spacing = 300;
+        int spacingRand = rng.nextInt(250, 300);
+        int width = 100;
+        int widthRand = rng.nextInt(95, 110);
+        int height = rng.nextInt(50, 300);
 
-            uccelloOOP.draw(g);
+        if (startGame) {
+            obstacles.add(new Obstacle(WIDTH + widthRand + obstacles.size() * spacingRand, HEIGHT - height - 120, widthRand, height, false));
 
-        /*if(!isPlaying() || isGameOver()) {
-            if(uccello.x < 0) {
-                uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
-            }
-        }*/
-            if(!isPlaying() || isGameOver()) {
-                if(uccelloOOP.getX() < 0) {
-                    uccelloOOP = new Player(playerName);
-                }
-            }
-
-        /*for (Rectangle o : rectObstacles) {
-            paintObstacle(g, o);
-        }*/
-
-            //disegna i tubi
-            for(Obstacle tubo : obstacles) {
-                tubo.draw(g);
-            }
-
-            //disegna le stringhe
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Helvetica", Font.BOLD, 60));
-
-            if (!isGameStarted()) {
-                g.drawString("Clicca o Premi 'Spazio' per Giocare", 150, HEIGHT / 2 - 50);
-            }
-            if (isGameOver() && isPlaying()) {
-                g.drawString("Game Over :<", 100, HEIGHT / 2);
-            }
-            if (!isGameOver() && isGameStarted()) {
-                g.setFont(new Font("Helvetica", Font.ITALIC, 30));
-                g.drawString(playerName, 25, 45);
-                g.setFont(new Font("Helvetica", Font.BOLD, 60));
-                g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
+            obstacles.add(new Obstacle(WIDTH + widthRand + (obstacles.size() - 1) * spacingRand, 0, widthRand, HEIGHT - height - spacingRand, true));
+        } else {
+            obstacles.add(new Obstacle((int) obstacles.get(obstacles.size() - 1).getX() + (2 * spacingRand), HEIGHT - height - 120, width, height, false));
+            obstacles.add(new Obstacle((int) obstacles.get(obstacles.size() - 1).getX(), 0, widthRand, HEIGHT - height - spacingRand, true));
         }
-
-
-
-        //bird icon
-        /*g.setColor(Color.RED);
-        g.fillRect(uccello.x, uccello.y, uccello.width, uccello.height);*/
-
     }
 
 
@@ -549,6 +492,88 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     }*/
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.clearRect(0, 0, WIDTH, HEIGHT);
+        //Background
+        /*g.setColor(Color.DARK_GRAY);
+        g.fillRect(0, 0, GameFrame.WIDTH, GameFrame.HEIGHT);*/
+        try {
+            g.drawImage(bg, 0, 0, WIDTH, HEIGHT, null);
+            //ground
+            /*g.setColor(Color.ORANGE.darker());
+            g.fillRect(0, HEIGHT - 120, WIDTH, 120);
+*/
+            for (int i = 0; i < WIDTH; i += 30) {
+                for (int j = HEIGHT - 120 + 20; j < HEIGHT; j += 30) {
+                    g.drawImage(ground, i, j, 30, 30, null);
+                }
+            }
+            //grass
+            /*g.setColor(Color.GREEN);
+            g.fillRect(0, HEIGHT - 120, WIDTH, 20);*/
+            for (int i = 0; i < WIDTH; i += 20) {
+                g.drawImage(grass, i, HEIGHT - 120, null);
+            }
+
+            if (uccelloOOP != null) {
+                uccelloOOP.draw(g);
+            }
+
+        /*if(!isPlaying() || isGameOver()) {
+            if(uccello.x < 0) {
+                uccello = new Rectangle(uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+            }
+        }*/
+            if (!isPlaying() || isGameOver()) {
+                if (uccelloOOP != null) {
+                    if (uccelloOOP.getX() < 0) {
+                        uccelloOOP = new Player(playerName);
+                    }
+                }
+            }
+
+        /*for (Rectangle o : rectObstacles) {
+            paintObstacle(g, o);
+        }*/
+
+            //disegna i tubi
+            for (Obstacle tubo : obstacles) {
+                tubo.draw(g);
+                if (tubo.intersects(uccelloOOP)) {
+                    uccelloOOP = new Player(playerName);
+                }
+            }
+
+            //disegna le stringhe
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Helvetica", Font.BOLD, 60));
+
+            if (!isGameStarted()) {
+                g.drawString("Clicca o Premi 'Spazio' per Giocare", 150, HEIGHT / 2 - 50);
+            }
+            if (isGameOver() && isPlaying()) {
+                g.drawString("Game Over :<", 100, HEIGHT / 2);
+            }
+            if (!isGameOver() && isGameStarted()) {
+                g.setFont(new Font("Helvetica", Font.ITALIC, 30));
+                if (!(playerName.isEmpty() || playerName.isBlank())) {
+                    g.drawString(playerName, 25, 45);
+                }
+                g.setFont(new Font("Helvetica", Font.BOLD, 60));
+                g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //bird icon
+        /*g.setColor(Color.RED);
+        g.fillRect(uccello.x, uccello.y, uccello.width, uccello.height);*/
+
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -559,10 +584,6 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     public Random getRng() {
         return rng;
-    }
-
-    public void setRng(Random rng) {
-        this.rng = rng;
     }
 
    /* public Rectangle getUccello() {
@@ -580,6 +601,10 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     public void setRectObstacles(ArrayList<Rectangle> rectObstacles) {
         this.rectObstacles = rectObstacles;
     }*/
+
+    public void setRng(Random rng) {
+        this.rng = rng;
+    }
 
     public boolean isGameOver() {
         return gameOver;
@@ -605,6 +630,20 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
         this.running = true;
     }
 
+    //inserisci il nuovo nome per il nuovo giocatore
+    public void nuovoNome() {
+        //ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+        String newName = JOptionPane.showInputDialog(this, "Inserisci il nome del giocatore", "Nuova Partita", JOptionPane.PLAIN_MESSAGE);
+        if (newName == null || newName.isBlank() || newName.isEmpty()) playerName = "New Quack";
+        else playerName = newName;
+
+        //piccolo easter egg
+        if (playerName.contains("quack") || playerName.contains("Quack") || playerName.contains("QUACK")) {
+            secretFX.playMusic();
+        }
+        secretFX.clip.setFramePosition(0);
+
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -617,21 +656,25 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             {
                 //se è gameOver, saltare fa iniziare una nuova partita
                 if (isGameOver()) {
-                    try{
+                    try {
+                        grabFocus();
+                        int scelta = JOptionPane.showConfirmDialog(this, "Nuovo Giocatore?", "Continua?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        if (scelta == JOptionPane.YES_OPTION) {
+                            nuovoNome();
+                        } else {
+                            setGameStarted(true);
+                            setPlaying(true);
+                            uccelloOOP.setAlive(false);
+                        }
                         uccelloOOP = new Player(playerName);
                         obstacles.clear();
-                        uccelloOOP.setDy(0);
-                        score = 0;
-                        addNewObstacleOOP(true);
-                        addNewObstacleOOP(true);
-                        addNewObstacleOOP(true);
-                        addNewObstacleOOP(true);
+                        startGame();
                         //jumping = true;
                         uccelloOOP.setJumping(true);
                         setPlaying(true);
                         uccelloOOP.setAlive(true);
                         setGameOver(false);
-                    }catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
 
@@ -640,9 +683,19 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 if (!isGameStarted()) {
                     //jumping = true;
                     {
+                        grabFocus();
                         setGameStarted(true);
+                        nuovoNome();
+                        if (playerName == null || playerName.isBlank() || playerName.isEmpty()) {
+                            playerName = "New Player";
+                        }
+                        uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
                         setPlaying(true);
                         uccelloOOP.setAlive(true);
+                        addNewObstacleOOP(true);
+                        addNewObstacleOOP(true);
+                        addNewObstacleOOP(true);
+                        addNewObstacleOOP(true);
                     }
                 }
                 if (isPlaying() && !isGameOver()) {
@@ -652,6 +705,8 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
                 }
                 if (!isPlaying() && !isGameOver()) {
                     setPlaying(true);
+                    setGameStarted(true);
+                    startGame();
                     uccelloOOP.setAlive(true);
                     //jumping = true;
                     uccelloOOP.setJumping(true);
@@ -670,10 +725,13 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_P) {
-
+            pauseFrame = music.clip.getFramePosition();
+            music.clip.stop();
             thread.suspend();
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
+            music.clip.setFramePosition(pauseFrame);
+            music.clip.start();
             thread.resume();
         }
     }
@@ -691,9 +749,63 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        {
+            //se è gameOver, saltare fa iniziare una nuova partita
+            if (isGameOver()) {
+                try {
+                    int scelta = JOptionPane.showConfirmDialog(this, "Nuovo Giocatore?", "Continua?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (scelta == JOptionPane.YES_OPTION) {
+                        nuovoNome();
+                    } else {
+                        setGameStarted(false);
+                        setPlaying(false);
+                        uccelloOOP.setAlive(false);
+                    }
+                    uccelloOOP = new Player(playerName);
+                    obstacles.clear();
+                    uccelloOOP.setDy(0);
+                    score = 0;
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    addNewObstacleOOP(true);
+                    //jumping = true;
+                    uccelloOOP.setJumping(true);
+                    setPlaying(true);
+                    uccelloOOP.setAlive(true);
+                    setGameOver(false);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
-        //falling = false;
-        uccelloOOP.jump();
+            }
+
+            if (!isGameStarted()) {
+                //jumping = true;
+                {
+                    setGameStarted(true);
+                    nuovoNome();
+                    if (playerName == null || playerName.isBlank() || playerName.isEmpty()) {
+                        playerName = "New Player";
+                    }
+                    uccelloOOP = new Player(playerName, uccelloInit_X, uccelloInit_Y, uccelloWidth, uccelloHeight);
+                    setPlaying(true);
+                    uccelloOOP.setAlive(true);
+                }
+            }
+            if (isPlaying() && !isGameOver()) {
+                //jumping = true;
+                uccelloOOP.setJumping(true);
+                uccelloOOP.jump();
+            }
+            if (!isPlaying() && !isGameOver()) {
+                setPlaying(true);
+                uccelloOOP.setAlive(true);
+                //jumping = true;
+                uccelloOOP.setJumping(true);
+                uccelloOOP.jump();
+            }
+        }
     }
 
     @Override
@@ -717,5 +829,30 @@ public class GamePanel extends JPanel implements Runnable, Serializable, MouseLi
     }
 
 
+    //protected final ArrayList<String> names = new ArrayList<String>();
+
+
+    public void Scrittura()                    //funzione che aggiunge un giocatore nell'arraylist player quando la partita si interrompe
+    {                                        //la ordine e infine la scrive in un file .csv
+        scores.add(score);
+        Collections.sort(scores);
+        PlayerScores.put(score, playerName);
+
+
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("HighScores.bin")));
+            output.writeObject(PlayerScores);
+            output.close();
+        } catch (IOException f) {
+            f.printStackTrace();
+        }
+
+        System.out.println(PlayerScores.keys());
+    }
+
+    public void HighScores() {
+
+    }
 }
+
 

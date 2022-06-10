@@ -104,7 +104,7 @@ public static GamePanel gamePanel;
 
         setJMenuBar(menu);
         MainPanel mainPanel = new MainPanel();
-        GamePanel gamePanel = new GamePanel("Fracchio");
+        GamePanel gamePanel = new GamePanel();
         add(gamePanel);
         setLocationRelativeTo(null);
         pack();

@@ -2,38 +2,28 @@ package flapquack.entities;
 
 import flapquack.ui.GameFrame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
 public class Obstacle extends Rectangle2D implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private int x, y, width, height;
-    private final Color testColor = Color.GREEN.darker();
     private static final int MAP_BORDER_DX = GameFrame.WIDTH, MAP_BORDER_DOWN = GameFrame.HEIGHT;
-    private Image sprite, spriteUpsideDown;
-    private boolean reverse;
+    //private final Color testColor = Color.GREEN.darker();
+    private int x, y, width, height;
+    private final Image sprite;
+    private final Image spriteUpsideDown;
+    private final boolean reverse;
 
-    public boolean isReverse() {
-        return reverse;
-    }
+    //------------------------------------------------------------//
 
-    public String toString() {
-        String delim = "\t";
-        String prop = "X: " + getX() + " Y: " + getY() + " WIDTH: " + getWidth() + " HEIGHT: " + getHeight();
-        return "Tubo: " + delim + prop + delim;
-    }
-
+    //Costruttore unico con parametri passati e Boolean che controlla se disegnare/creare un oggetto normale o
+    //"a testa in giù"
     public Obstacle(int x, int y, int width, int height, boolean reverse) {
         super();
-
         setX(x);
         setY(y);
         setWidth(width);
@@ -42,26 +32,35 @@ public class Obstacle extends Rectangle2D implements Serializable {
         this.reverse = reverse;
         sprite = new ImageIcon("Assets/Sprites/pipe.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
         spriteUpsideDown = new ImageIcon("Assets/Sprites/pipe_upsidedown.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+    }
 
+    //override del metodo toString
+    @Override
+    public String toString() {
+        String delim = "\t";
+        String prop = "X: " + getX() + " Y: " + getY() + " WIDTH: " + getWidth() + " HEIGHT: " + getHeight();
+        return "Tubo: " + delim + prop + delim;
     }
 
     public void draw(Graphics g) {
         /*g.setColor(testColor);
         g.fillRect(this.x, this.y, this.width, this.height);*/
         try {
-            if(isReverse()) {
-                g.drawImage(spriteUpsideDown, this.x, this.y, null);
+            if (isReverse()) {
+                g.drawImage(spriteUpsideDown, this.x, this.y - 8, null);
 
+            } else {
+                g.drawImage(sprite, this.x, this.y + 8, null);
             }
-            else {
-                g.drawImage(sprite, this.x, this.y, null);
-            }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //metodi GET e SET
+    public boolean isReverse() {
+        return reverse;
+    }
     @Override
     public double getX() {
         return x;
@@ -94,15 +93,16 @@ public class Obstacle extends Rectangle2D implements Serializable {
         return height;
     }
 
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     @Override
     public boolean isEmpty() {
         return false;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
+    //metodi ereditati da Rectangle2D che non sono stati implementati
     @Override
     public void setRect(double x, double y, double w, double h) {
     }
