@@ -2,9 +2,13 @@ package flapquack.entities;
 
 import flapquack.ui.GameFrame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -25,6 +29,8 @@ public class Player extends Rectangle2D implements Serializable {
     private final double stopJumpSpeed = 0.3;
 
     //Location del file Immagine
+    //private final Image sprite;
+    private static BufferedImage spriteBuffered;
     private final String spritePath = "Assets/Sprites/player.png";
 
     //spostamento verticale
@@ -33,7 +39,6 @@ public class Player extends Rectangle2D implements Serializable {
     private int x, y, width, height;
     private boolean alive, jumping;
     private String playerName;
-    private final Image sprite;
 
     //costruttore senza parametri coordinate/dimensioni -> inizializza con costanti default
     public Player(String playerName) {
@@ -44,8 +49,13 @@ public class Player extends Rectangle2D implements Serializable {
         setY(Y_DEFAULT);
         setWidth(WIDTH_DEFAULT);
         setHeight(HEIGHT_DEFAULT);
-        setFrame(this.x, this.y, this.width + this.width / 1.2, this.height - this.height / 5);
-        sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+        setFrame(this.x, this.y, this.width + this.width / 1.2, this.height - 70);
+        //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+        try {
+            spriteBuffered = ImageIO.read(new File(spritePath));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
         setJumping(false);
         setAlive(true);
 
@@ -61,10 +71,14 @@ public class Player extends Rectangle2D implements Serializable {
         setWidth(width);
         setHeight(height);
         setJumping(false);
-        setFrame(this.x, this.y, this.width - this.width / 1.2, this.height - this.height / 5);
+        setFrame(this.x, this.y, this.width - this.width / 1.2, this.height - 70);
 
-        sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
-
+        //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+        try {
+            spriteBuffered = ImageIO.read(new File(spritePath));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
         setAlive(true);
     }
 
@@ -83,7 +97,7 @@ public class Player extends Rectangle2D implements Serializable {
     //metodo chiamato dalla paintComponent per disegnare l'oggetto Player
     public void draw(Graphics g) {
         try {
-            g.drawImage(sprite, this.x, this.y, null);
+            g.drawImage(spriteBuffered, this.x, this.y, this.width + 40, this.height + 40, null);
         } catch (Exception e) {
             e.printStackTrace();
         }

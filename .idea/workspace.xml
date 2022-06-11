@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores.">
-      <change afterPath="$PROJECT_DIR$/Assets/Sounds/honk.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HighScores.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HighScores.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/game/SoundFX.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Background/bg.gif" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Background/bg.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/FlapQuack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/game/Music.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/game/Music.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

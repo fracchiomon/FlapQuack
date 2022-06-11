@@ -2,9 +2,13 @@ package flapquack.entities;
 
 import flapquack.ui.GameFrame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -14,8 +18,12 @@ public class Obstacle extends Rectangle2D implements Serializable {
     private static final int MAP_BORDER_DX = GameFrame.WIDTH, MAP_BORDER_DOWN = GameFrame.HEIGHT;
     //private final Color testColor = Color.GREEN.darker();
     private int x, y, width, height;
-    private final Image sprite;
-    private final Image spriteUpsideDown;
+    /*private final Image sprite;
+    private final Image spriteUpsideDown;*/
+    private static BufferedImage spriteBuffered = null;
+    private static BufferedImage spriteUpsideDownBuffered = null;
+    private final String spritePath = "Assets/Sprites/pipe.png";
+    private final String spriteUpsideDownPath = "Assets/Sprites/pipe_upsidedown.png";
     private final boolean reverse;
 
     //------------------------------------------------------------//
@@ -30,8 +38,14 @@ public class Obstacle extends Rectangle2D implements Serializable {
         setHeight(height);
         setFrame(x, y, width, height);
         this.reverse = reverse;
-        sprite = new ImageIcon("Assets/Sprites/pipe.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
-        spriteUpsideDown = new ImageIcon("Assets/Sprites/pipe_upsidedown.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+        /*sprite = new ImageIcon("Assets/Sprites/pipe.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+        spriteUpsideDown = new ImageIcon("Assets/Sprites/pipe_upsidedown.png").getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);*/
+        try {
+            spriteBuffered = ImageIO.read(new File(spritePath));
+            spriteUpsideDownBuffered = ImageIO.read(new File(spriteUpsideDownPath));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
     //override del metodo toString
@@ -47,10 +61,12 @@ public class Obstacle extends Rectangle2D implements Serializable {
         g.fillRect(this.x, this.y, this.width, this.height);*/
         try {
             if (isReverse()) {
-                g.drawImage(spriteUpsideDown, this.x, this.y - 8, null);
+                //g.drawImage(spriteUpsideDown, this.x, this.y - 8, null);
+                g.drawImage(spriteUpsideDownBuffered, this.x, this.y - 8, this.width, this.height, null);
 
             } else {
-                g.drawImage(sprite, this.x, this.y + 8, null);
+                //g.drawImage(sprite, this.x, this.y + 8, null);
+                g.drawImage(spriteBuffered, this.x, this.y + 8,this.width, this.height, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
