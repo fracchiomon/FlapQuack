@@ -23,10 +23,14 @@ public class Player extends Rectangle2D implements Serializable {
     //costanti di default per un'inizializzazione base del Player
     private final int X_DEFAULT = MAP_BORDER_DX / 2 - 100, Y_DEFAULT = MAP_BORDER_DOWN / 2 - 10;
     private final int WIDTH_DEFAULT = 30, HEIGHT_DEFAULT = 30;
-    private final double maxFallSpeed = 2.3;
-    private final double jumpStart = -1.8;
-    private final double fallSpeed = 0.04;
-    private final double stopJumpSpeed = 0.3;
+    private double maxFallSpeed = 2.3;
+    private final double maxFallSpeedUnfair = 0.7;
+    private double jumpStart = -1.8;
+    private final double jumpStartUnfair = -1.2;
+    private double fallSpeed = 0.04;
+    private final double fallSpeedUnfair = 0.2;
+    private double stopJumpSpeed = 0.3;
+    private final double stopJumpSpeedUnfair = 0.5;
 
     //Location del file Immagine
     //private final Image sprite;
@@ -51,7 +55,7 @@ public class Player extends Rectangle2D implements Serializable {
         setHeight(HEIGHT_DEFAULT);
         //gestire un'unica collision box è difficile visto lo sprite che ho messo.
 
-        setFrame(this.x, this.y, this.width + this.width -30, this.height - 50);
+        setFrame(this.x, this.y, this.width + this.width, this.height);
         //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         try {
             spriteBuffered = ImageIO.read(new File(spritePath));
@@ -74,7 +78,7 @@ public class Player extends Rectangle2D implements Serializable {
         setHeight(height);
         setJumping(false);
         //gestire un'unica collision box è difficile visto lo sprite che ho messo.
-        setFrame(this.x, this.y, this.width - this.width - 30, this.height - 50);
+        setFrame(this.x, this.y, this.width, this.height);
 
         //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         try {
@@ -84,6 +88,78 @@ public class Player extends Rectangle2D implements Serializable {
         }
         setAlive(true);
     }
+
+    public Player(String playerName, int x, int y, int width, int height, boolean unfairCheck) {
+        super();
+        setPlayerName(playerName);
+        unfairMode(unfairCheck);
+        setDy(-3.5);
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
+        setJumping(false);
+        //gestire un'unica collision box è difficile visto lo sprite che ho messo.
+        setFrame(this.x, this.y, this.width, this.height);
+
+        //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+        try {
+            spriteBuffered = ImageIO.read(new File(spritePath));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        setAlive(true);
+    }
+
+
+    //costruttore con parametri coordinate/dimensioni
+    public Player(String playerName, boolean unfairCheck) {
+        super();
+        setPlayerName(playerName);
+        unfairMode(unfairCheck);
+        setDy(-3.5);
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
+        setJumping(false);
+        //gestire un'unica collision box è difficile visto lo sprite che ho messo.
+        setFrame(this.x, this.y, this.width, this.height);
+
+        //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
+        try {
+            spriteBuffered = ImageIO.read(new File(spritePath));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        setAlive(true);
+    }
+
+    public void setMaxFallSpeed(double maxFallSpeed) {
+        this.maxFallSpeed = maxFallSpeed;
+    }
+
+    public void setJumpStart(double jumpStart) {
+        this.jumpStart = jumpStart;
+    }
+
+    public void setFallSpeed(double fallSpeed) {
+        this.fallSpeed = fallSpeed;
+    }
+
+    public void setStopJumpSpeed(double stopJumpSpeed) {
+        this.stopJumpSpeed = stopJumpSpeed;
+    }
+
+    public void unfairMode(boolean isUnfair) {
+        if (isUnfair) {
+            setMaxFallSpeed(maxFallSpeedUnfair);
+            setJumpStart(jumpStartUnfair);
+            setFallSpeed(fallSpeedUnfair);
+            setStopJumpSpeed(stopJumpSpeedUnfair);
+        }
+    }
+
 
     //metodo toString custom
     @Override
