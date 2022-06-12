@@ -49,7 +49,7 @@ public class Player extends Rectangle2D implements Serializable {
         setY(Y_DEFAULT);
         setWidth(WIDTH_DEFAULT);
         setHeight(HEIGHT_DEFAULT);
-        setFrame(this.x, this.y, this.width + this.width / 1.2, this.height - 70);
+        setFrame(this.x, this.y, this.width + this.width / 1.2, this.height + 50);
         //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         try {
             spriteBuffered = ImageIO.read(new File(spritePath));
@@ -71,7 +71,7 @@ public class Player extends Rectangle2D implements Serializable {
         setWidth(width);
         setHeight(height);
         setJumping(false);
-        setFrame(this.x, this.y, this.width - this.width / 1.2, this.height - 70);
+        setFrame(this.x, this.y, this.width - this.width / 1.2, this.height + 70);
 
         //sprite = new ImageIcon(spritePath).getImage().getScaledInstance(this.width + 40, this.height + 40, Image.SCALE_SMOOTH);
         try {

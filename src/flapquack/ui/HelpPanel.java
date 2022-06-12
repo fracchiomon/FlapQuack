@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class HelpPanel extends JPanel implements KeyListener {
+public class HelpPanel extends BasePanel implements KeyListener {
 
     private static final String[] text = {
             "Benvenuto!",
@@ -17,8 +17,8 @@ public class HelpPanel extends JPanel implements KeyListener {
             "Premi 'BackSpace' o 'Esc' per tornare indietro."
     };
 
-    public HelpPanel() {
-        super();
+    public HelpPanel(GameFrame frame) {
+        super(frame);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         setFocusable(true);
         grabFocus();

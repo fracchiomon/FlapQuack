@@ -18,7 +18,9 @@ public class GameFrame extends JFrame implements Serializable {
 
     public static int switcher;
     public QuackMenu menu;
-public static GamePanel gamePanel;
+    private BasePanel currentPanel;
+
+    public static GamePanel gamePanel;
 
     static class QuackMenu extends JMenuBar implements ActionListener {
         private final static String menuText[] = {"Game", "About"};
@@ -26,10 +28,12 @@ public static GamePanel gamePanel;
         private JMenu menu[];
         private JMenuItem menuItem[];
         private String playerName;
+        private GameFrame gameFrame;
         //private GameStateManager gsm;
 
-        public QuackMenu() {
+        public QuackMenu(GameFrame gameFrame) {
             super();
+            this.gameFrame = gameFrame;
             //gsm = gameStateManager;
             menu = new JMenu[2];
             menuItem = new JMenuItem[3];
@@ -53,7 +57,7 @@ public static GamePanel gamePanel;
                 try {
                     //gsm.getSTATES().push(new Level1State(gsm));
                     playerName = JOptionPane.showInputDialog(this, "Inserisci nome giocatore");
-                    gamePanel = new GamePanel(playerName);
+                    gamePanel = new GamePanel(this.gameFrame,playerName);
                     removeAll();
                     add(gamePanel);
                     revalidate();
@@ -64,7 +68,7 @@ public static GamePanel gamePanel;
                 try {
                     //gsm.getSTATES().push(new HelpState(gsm));
                     removeAll();
-                    add(new HelpPanel());
+                    add(new HelpPanel(gameFrame));
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -89,23 +93,50 @@ public static GamePanel gamePanel;
     public static Music getMusic() {
         return music;
     }
-
     public static void setMusic(Music musica) {
         music = musica;
     }
+
+    private void SetCurrentPanel(BasePanel basePanel)
+    {
+        if (this.currentPanel != null)
+        {
+            this.currentPanel.dispose();
+            remove(this.currentPanel);
+        }
+
+        this.currentPanel = basePanel;
+        add(this.currentPanel);
+        validate();
+    }
+
+    public void ShowGamePanel(String playerName)
+    {
+        if ( playerName == null )
+        {
+            SetCurrentPanel(new GamePanel(this));
+        }
+        else
+        {
+            SetCurrentPanel(new GamePanel(this, playerName));
+        }
+    }
+
+
     public GameFrame() {
         super(title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(WIDTH, HEIGHT));
         setResizable(false);
         setTitle(title);
-        menu = new QuackMenu();
+        menu = new QuackMenu(this);
         music = new Music("Assets/Music/monty_on_the_run.wav");
 
         setJMenuBar(menu);
-        MainPanel mainPanel = new MainPanel();
-        GamePanel gamePanel = new GamePanel();
+        MainPanel mainPanel = new MainPanel(this);
+        GamePanel gamePanel = new GamePanel(this);
         add(gamePanel);
+
         setLocationRelativeTo(null);
         pack();
         setVisible(true);

@@ -10,7 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
 
-public class MainPanel extends JPanel implements Serializable, ActionListener, KeyListener {
+public class MainPanel extends BasePanel implements Serializable, ActionListener, KeyListener {
     private static final int WIDTH = GameFrame.WIDTH, HEIGHT = GameFrame.HEIGHT;
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,8 +32,9 @@ public class MainPanel extends JPanel implements Serializable, ActionListener, K
         MainPanel.invisibleBtn.doClick(100);
     }
 
-    public MainPanel() {
-        super();
+    public MainPanel(GameFrame gameFrame) {
+        super(gameFrame);
+        this.gameFrame = gameFrame;
         init();
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setMinimumSize(new Dimension(360, 240));
@@ -118,7 +119,7 @@ public class MainPanel extends JPanel implements Serializable, ActionListener, K
     }
 
     public void init() {
-        startPanel = new StartPanel();
+        startPanel = new StartPanel(gameFrame);
         setStartON(true);
         setGameON(false);
         setHelpON(false);

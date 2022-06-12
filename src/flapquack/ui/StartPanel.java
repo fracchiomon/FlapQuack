@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-public class StartPanel extends JPanel {
+public class StartPanel extends BasePanel {
 
     private JButton nuovaPartitaButton;
     private JPanel panel1;
@@ -24,6 +24,7 @@ public class StartPanel extends JPanel {
     private Image bg;
     private String playerName;
     private int choice;
+    private GameFrame gameFrame;
 
 
     public int getChoice() {
@@ -38,8 +39,9 @@ public class StartPanel extends JPanel {
         return playerName;
     }
 
-    public StartPanel() {
-        super();
+    public StartPanel(GameFrame gameFrame) {
+        super(gameFrame);
+        this.gameFrame = gameFrame;
         setChoice(-1);
         //JButton invisibleBtn = MainPanel.getInvisibleBtn();
         add(panel1);
@@ -70,7 +72,7 @@ public class StartPanel extends JPanel {
                 setChoice(0); //0: nuova partita
                 //MainPanel.clickInvisibleBtn();
 
-                add(new GamePanel(playerName));
+                add(new GamePanel(gameFrame, playerName));
                 validate();
             }
         });
@@ -80,7 +82,7 @@ public class StartPanel extends JPanel {
                 setChoice(1);   //1: help
                 MainPanel.clickInvisibleBtn();
 
-                add(new HelpPanel());
+                add(new HelpPanel(gameFrame));
                 validate();
             }
         });
