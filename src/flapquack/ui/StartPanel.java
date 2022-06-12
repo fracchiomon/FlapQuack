@@ -66,24 +66,19 @@ public class StartPanel extends BasePanel {
         nuovaPartitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
                 playerName = JOptionPane.showInputDialog(StartPanel.this, "Inserisci il tuo nome", "Nuovo Giocatore", JOptionPane.PLAIN_MESSAGE);
                 System.out.println(playerName);
                 setChoice(0); //0: nuova partita
-                //MainPanel.clickInvisibleBtn();
 
-                add(new GamePanel(gameFrame, playerName));
-                validate();
+                gameFrame.ShowGamePanel(playerName);
+                //validate();
             }
         });
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChoice(1);   //1: help
-                MainPanel.clickInvisibleBtn();
-
-                add(new HelpPanel(gameFrame));
-                validate();
+                gameFrame.ShowHelpPanel();
             }
         });
         esciButton.addActionListener(new ActionListener() {
@@ -221,12 +216,6 @@ public class StartPanel extends BasePanel {
         return panel1;
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (choice == 0) {
 
-        }
-    }
 }
 

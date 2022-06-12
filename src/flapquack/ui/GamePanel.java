@@ -4,7 +4,6 @@ import flapquack.entities.Obstacle;
 import flapquack.entities.Player;
 import flapquack.game.Music;
 import flapquack.game.SoundFX;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,7 +29,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     //Hashtable che vorrebbe contenere i punteggi per inserirli in un file
     protected Hashtable<Integer, String> PlayerScores;
     protected final ArrayList<Integer> scores = new ArrayList<>();
-    public final Music music = GameFrame.getMusic();
+    public final Music music = GameFrame.getSong1();
     private final Thread thread;
     private final SoundFX secretFX = new SoundFX("Assets/Sounds/honk.wav");
     public boolean playing;
@@ -353,7 +352,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
 
     @Override
-    public void draw(@NotNull Graphics g) {
+    public void draw(Graphics g) {
         //update dello schermo, pulizia dell'area di render
         g.clearRect(0, 0, WIDTH, HEIGHT);
         try {
@@ -401,7 +400,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
     }
 
-    private void paintStrings(@NotNull Graphics g) {
+    private void paintStrings(Graphics g) {
         //disegna le stringhe
         g.setColor(Color.WHITE);
         g.setFont(new Font("Helvetica", Font.BOLD, 60));

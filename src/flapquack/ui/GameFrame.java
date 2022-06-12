@@ -16,17 +16,21 @@ public class GameFrame extends JFrame implements Serializable {
     public static final String title = FlapQuack.TITLE, font = FlapQuack.FONT;
     public static final int WIDTH = 1280, HEIGHT = 720;
 
-    public static int switcher;
     public QuackMenu menu;
     private BasePanel currentPanel;
 
     public static GamePanel gamePanel;
+    public static HelpPanel helpPanel;
+    public static AboutPanel aboutPanel;
+    public static StartPanel startPanel;
 
-    static class QuackMenu extends JMenuBar implements ActionListener {
+    class QuackMenu extends JMenuBar implements ActionListener {
         private final static String menuText[] = {"Game", "About"};
-        private final static String menuItemText[] = {"Nuova Partita", "Help", "Esci"};
+        private final static String menuItemText[] = {"Nuova Partita","Menu Principale", "Help", "Esci"};
+
         private JMenu menu[];
         private JMenuItem menuItem[];
+        private JMenuItem aboutMenuItem;
         private String playerName;
         private GameFrame gameFrame;
         //private GameStateManager gsm;
@@ -36,7 +40,8 @@ public class GameFrame extends JFrame implements Serializable {
             this.gameFrame = gameFrame;
             //gsm = gameStateManager;
             menu = new JMenu[2];
-            menuItem = new JMenuItem[3];
+            menuItem = new JMenuItem[4];
+            aboutMenuItem = new JMenuItem(menuText[1]);
 
 
             for (int m = 0; m < menu.length; m++) {
@@ -48,6 +53,7 @@ public class GameFrame extends JFrame implements Serializable {
                 menuItem[m].addActionListener(this);
                 menu[0].add(menuItem[m]);
             }
+            menu[1].add(aboutMenuItem);
 
         }
 
@@ -58,22 +64,30 @@ public class GameFrame extends JFrame implements Serializable {
                     //gsm.getSTATES().push(new Level1State(gsm));
                     playerName = JOptionPane.showInputDialog(this, "Inserisci nome giocatore");
                     gamePanel = new GamePanel(this.gameFrame,playerName);
-                    removeAll();
-                    add(gamePanel);
+                    GameFrame.this.ShowGamePanel(playerName);
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-            } else if (menuItem[1].equals(e.getSource())) {
+            } else if(menuItem[1].equals(e.getSource())) {
+
+                try {
+                    GameFrame.this.ShowStartPanel();
+                    revalidate();
+                } catch (Exception ex) {
+                    throw new RuntimeException();
+                }
+
+            } else if (menuItem[2].equals(e.getSource())) {
                 try {
                     //gsm.getSTATES().push(new HelpState(gsm));
-                    removeAll();
-                    add(new HelpPanel(gameFrame));
+                    helpPanel = new HelpPanel(this.gameFrame);
+                    GameFrame.this.ShowHelpPanel();
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-            } else if (menuItem[2].equals(e.getSource())) {
+            } else if (menuItem[3].equals(e.getSource())) {
                 //gsm.getSTATES().clear();
 
                 ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
@@ -84,17 +98,19 @@ public class GameFrame extends JFrame implements Serializable {
                 }
 
                 System.exit(0);
+            } else if (aboutMenuItem.equals(e.getSource())) {
+                GameFrame.this.ShowAboutPanel();
             }
         }
     }
 
-    private static Music music;
+    private static Music song1;
 
-    public static Music getMusic() {
-        return music;
+    public static Music getSong1() {
+        return song1;
     }
-    public static void setMusic(Music musica) {
-        music = musica;
+    public static void setSong1(Music musica) {
+        song1 = musica;
     }
 
     private void SetCurrentPanel(BasePanel basePanel)
@@ -122,6 +138,18 @@ public class GameFrame extends JFrame implements Serializable {
         }
     }
 
+    public void ShowHelpPanel() {
+        SetCurrentPanel(new HelpPanel(this));
+    }
+
+    public void ShowAboutPanel() {
+        SetCurrentPanel(new AboutPanel(this));
+    }
+
+    public void ShowStartPanel() {
+        SetCurrentPanel(new StartPanel(this));
+    }
+
 
     public GameFrame() {
         super(title);
@@ -130,12 +158,10 @@ public class GameFrame extends JFrame implements Serializable {
         setResizable(false);
         setTitle(title);
         menu = new QuackMenu(this);
-        music = new Music("Assets/Music/monty_on_the_run.wav");
+        song1 = new Music("Assets/Music/monty_on_the_run.wav");
 
         setJMenuBar(menu);
-        MainPanel mainPanel = new MainPanel(this);
-        GamePanel gamePanel = new GamePanel(this);
-        add(gamePanel);
+        ShowStartPanel();
 
         setLocationRelativeTo(null);
         pack();

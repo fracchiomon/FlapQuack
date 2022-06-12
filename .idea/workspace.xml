@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Pulizia e Commento del Codice in corso&#10;&#10;TODO: qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, High-Scores.">
-      <change afterPath="$PROJECT_DIR$/Data/HighScores.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/BasePanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/flapquack/ui/AboutPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlapQuack.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FlapQuack.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HighScores.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/HighScores.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/MainPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/MainPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
