@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -21,7 +22,7 @@ public class StartPanel extends BasePanel {
     private JButton helpButton;
     private JButton esciButton;
     private JLabel title;
-    private Image bg;
+    private BufferedImage bg;
     private String playerName;
     private int choice;
     private GameFrame gameFrame;
@@ -59,7 +60,12 @@ public class StartPanel extends BasePanel {
             }
         });
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
-        bg = new ImageIcon("Assets/Background/bg.png").getImage();
+        //bg = new ImageIcon("Assets/Background/bg.png").getImage();
+        try {
+            bg = ImageIO.read(new File("Assets/Background/bg.png"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
         setVisible(true);
 
 
@@ -68,16 +74,29 @@ public class StartPanel extends BasePanel {
             public void actionPerformed(ActionEvent e) {
                 playerName = JOptionPane.showInputDialog(StartPanel.this, "Inserisci il tuo nome", "Nuovo Giocatore", JOptionPane.PLAIN_MESSAGE);
                 System.out.println(playerName);
-                setChoice(0); //0: nuova partita
+                Icon icon = new ImageIcon("Assets/Sprites/player.png");
+                JCheckBox unfair = new JCheckBox("Unfair Mode? (Extreme only)");
+                Object[] options = {"Easy", "Normal", "Hard", "EXTREME", unfair};
+                int difficulty = JOptionPane.showOptionDialog(null, "Seleziona la Difficoltà!", "Difficulty Selection",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[1]);
+                switch (difficulty) {
+                    case 0 -> gameFrame.ShowGamePanel(playerName, 0, false);
+                    case 1 -> gameFrame.ShowGamePanel(playerName, 1, false);
+                    case 2 -> gameFrame.ShowGamePanel(playerName, 2, false);
+                    case 3 -> {
+                        if (unfair.isSelected()) {
+                            gameFrame.ShowGamePanel(playerName, 3, true);
+                        }
+                        gameFrame.ShowGamePanel(playerName, 3, false);
+                    }
+                    default -> gameFrame.ShowGamePanel(playerName, 1, false);
+                }
 
-                gameFrame.ShowGamePanel(playerName);
-                //validate();
             }
         });
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setChoice(1);   //1: help
                 gameFrame.ShowHelpPanel();
             }
         });
@@ -107,8 +126,12 @@ public class StartPanel extends BasePanel {
 
     }
 
-    public Image getBg() {
-        return bg;
+    public void draw(Graphics g) {
+        try {
+            g.drawImage(bg, 0, 0, WIDTH, HEIGHT, null);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     {

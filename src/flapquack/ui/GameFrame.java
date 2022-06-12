@@ -61,10 +61,25 @@ public class GameFrame extends JFrame implements Serializable {
         public void actionPerformed(ActionEvent e) {
             if (menuItem[0].equals(e.getSource())) {
                 try {
-                    //gsm.getSTATES().push(new Level1State(gsm));
                     playerName = JOptionPane.showInputDialog(this, "Inserisci nome giocatore");
-                    gamePanel = new GamePanel(this.gameFrame,playerName);
-                    GameFrame.this.ShowGamePanel(playerName);
+                    Icon icon = new ImageIcon("Assets/Sprites/player.png");
+                    JCheckBox unfair = new JCheckBox("Unfair Mode? (Extreme only)");
+                    Object[] options = {"Easy", "Normal", "Hard", "EXTREME", unfair};
+                    int difficulty = JOptionPane.showOptionDialog(null,"Seleziona la Difficoltà!","Difficulty Selection",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[1]);
+                    switch (difficulty) {
+                        case 0 -> gameFrame.ShowGamePanel(playerName, 0,false);
+                        case 1 -> gameFrame.ShowGamePanel(playerName, 1, false);
+                        case 2 -> gameFrame.ShowGamePanel(playerName, 2, false);
+                        case 3 -> {
+                            if (unfair.isSelected()) {
+                                gameFrame.ShowGamePanel(playerName, 3, true);
+                            }
+                            gameFrame.ShowGamePanel(playerName, 3, false);
+                        }
+                        default -> gameFrame.ShowGamePanel(playerName, 1, false);
+                    }
+
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -81,7 +96,6 @@ public class GameFrame extends JFrame implements Serializable {
             } else if (menuItem[2].equals(e.getSource())) {
                 try {
                     //gsm.getSTATES().push(new HelpState(gsm));
-                    helpPanel = new HelpPanel(this.gameFrame);
                     GameFrame.this.ShowHelpPanel();
                     revalidate();
                 } catch (Exception ex) {
@@ -126,15 +140,15 @@ public class GameFrame extends JFrame implements Serializable {
         validate();
     }
 
-    public void ShowGamePanel(String playerName)
+    public void ShowGamePanel(String playerName, int difficulty, boolean unfair)
     {
         if ( playerName == null )
         {
-            SetCurrentPanel(new GamePanel(this));
+            SetCurrentPanel(new GamePanel(this, difficulty, unfair));
         }
         else
         {
-            SetCurrentPanel(new GamePanel(this, playerName));
+            SetCurrentPanel(new GamePanel(this, playerName, difficulty, unfair));
         }
     }
 

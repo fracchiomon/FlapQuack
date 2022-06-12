@@ -19,13 +19,25 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Random;
 
+@SuppressWarnings("removal")
 public class GamePanel extends BasePanel implements Runnable, Serializable, MouseListener, KeyListener {
     @Serial
     private static final long serialVersionUID = 1L;
     private static final int WIDTH = GameFrame.WIDTH, HEIGHT = GameFrame.HEIGHT;
-    private static final int FPS = 60;
+    private static final int FPS = 30;
     private static final long targetTime = 1000 / FPS;
-    public static double movingSpeed = 1.5; //velocità di scorrimento dei tubazzi
+    public double movingSpeed; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedNormal = 1.5; //velocità di scorrimento dei tubazzi - Normal
+
+    public final double movingSpeedEasy = 1; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedHard = 2.5; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedExtreme = 5; //velocità di scorrimento dei tubazzi - Normal
+    public int difficulty = 0; //0 - Easy | 1 - Normal | 2 - Hard | 3 - Extreme | 4 - Unfair Mode
+    public boolean unfairModeOn; //Se attivato attiva la Unfair Mode, con velocità Extreme
+                                        //e parametri gravità/salto modificati
+    private boolean unfairCheck;
+
+
     //Hashtable che vorrebbe contenere i punteggi per inserirli in un file
     protected Hashtable<Integer, String> PlayerScores;
     protected final ArrayList<Integer> scores = new ArrayList<>();
@@ -35,7 +47,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     public boolean playing;
     private boolean gameOver, gameStarted;
     protected boolean inMezzoAiTubi = false;
-
     public Player uccellaccio;
     protected int pauseFrame = 0;
     private String playerName;
@@ -49,6 +60,37 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         super(gameFrame);
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+        init();
+        String bg_Path = "Assets/Background/bg.png";
+        try {
+            bgBuffered = ImageIO.read(new File(bg_Path));
+            String ground_Path = "Assets/Sprites/brick.png";
+            groundBuffered = ImageIO.read(new File(ground_Path));
+            String grass_Path = "Assets/Sprites/grass.png";
+            grassBuffered = ImageIO.read(new File(grass_Path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        setFocusable(true);
+        setVisible(true);
+
+    }
+    public GamePanel(GameFrame gameFrame, int difficulty, boolean unfair) {
+        super(gameFrame);
+        this.difficulty = difficulty;
+        unfairCheck = unfair;
+        thread = new Thread(this);
+        setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+        String bg_Path = "Assets/Background/bg.png";
+        try {
+            bgBuffered = ImageIO.read(new File(bg_Path));
+            String ground_Path = "Assets/Sprites/brick.png";
+            groundBuffered = ImageIO.read(new File(ground_Path));
+            String grass_Path = "Assets/Sprites/grass.png";
+            grassBuffered = ImageIO.read(new File(grass_Path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         init();
         setFocusable(true);
         setVisible(true);
@@ -64,9 +106,69 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         bgBuffered = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         init();
+        String bg_Path = "Assets/Background/bg.png";
+        try {
+            bgBuffered = ImageIO.read(new File(bg_Path));
+            String ground_Path = "Assets/Sprites/brick.png";
+            groundBuffered = ImageIO.read(new File(ground_Path));
+            String grass_Path = "Assets/Sprites/grass.png";
+            grassBuffered = ImageIO.read(new File(grass_Path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         setFocusable(true);
         setVisible(true);
 
+    }
+
+    public GamePanel(GameFrame gameFrame, String playerName, int difficulty, boolean unfair) {
+        super(gameFrame);
+        this.playerName = playerName;
+        this.difficulty = difficulty;
+        unfairCheck = unfair;
+        thread = new Thread(this);
+        setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
+        bgBuffered = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        String bg_Path = "Assets/Background/bg.png";
+        try {
+            bgBuffered = ImageIO.read(new File(bg_Path));
+            String ground_Path = "Assets/Sprites/brick.png";
+            groundBuffered = ImageIO.read(new File(ground_Path));
+            String grass_Path = "Assets/Sprites/grass.png";
+            grassBuffered = ImageIO.read(new File(grass_Path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        init();
+        setFocusable(true);
+        setVisible(true);
+    }
+
+    public void setMovingSpeed(double movingSpeed) {
+        this.movingSpeed = movingSpeed;
+    }
+
+    public boolean isUnfairModeOn() {
+        return unfairModeOn;
+    }
+
+    public void setUnfairModeOn(boolean unfairModeOn) {
+        this.unfairModeOn = unfairModeOn;
+    }
+
+    public void setGameDifficulty() {
+        switch (this.difficulty) {
+            case 0 -> setMovingSpeed(movingSpeedEasy);
+            case 1 -> setMovingSpeed(movingSpeedNormal);
+            case 2 -> setMovingSpeed(movingSpeedHard);
+            case 3 -> {
+                if (unfairCheck) {
+                    setUnfairModeOn(true);
+                }
+                setMovingSpeed(movingSpeedExtreme);
+            }
+            default -> setMovingSpeed(movingSpeedNormal);
+        }
     }
 
     public boolean isPlaying() {
@@ -84,16 +186,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         rng = new Random(System.nanoTime());
         obstacles = new ArrayList<>();
         PlayerScores = new Hashtable<>();
-        String bg_Path = "Assets/Background/bg.png";
-        try {
-            bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "Assets/Sprites/brick.png";
-            groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "Assets/Sprites/grass.png";
-            grassBuffered = ImageIO.read(new File(grass_Path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+
+        setGameDifficulty();
+
         setRunning(true);
         setPlaying(false);
 
@@ -114,16 +210,21 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         //dy = -3.5;
         //seed del Random Generator
         rng.setSeed(System.nanoTime());
-        movingSpeed = 1.5;
+        //movingSpeed = 1.5;
         score = 0;
         obstacles.clear();
-        uccellaccio = new Player(playerName);
+        if (!isUnfairModeOn()) {
+            uccellaccio = new Player(playerName);
+        }
+        else {
+            uccellaccio = new Player(playerName, true);
+        }
         setPlaying(true);
         setGameOver(false);
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
-        addNewObstacleOOP(true);
+        addNewObstacle(true);
+        addNewObstacle(true);
+        addNewObstacle(true);
+        addNewObstacle(true);
     }
 
     //Controlla lo stato del gioco e determina se Eseguire il salto fa partire una nuova partita (se siamo in GameOver)
@@ -150,7 +251,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             //jumping = true;
             {
                 setGameStarted(true);
-                nuovoNome();
+                //nuovoNome();
                 if (playerName == null || playerName.isBlank() || playerName.isEmpty()) {
                     playerName = "New Player";
                 }
@@ -187,8 +288,8 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             try {
                 //ticks++;
                 startTime = System.currentTimeMillis();
-                System.out.println(uccellaccio.toString());
-                System.out.println(music.clip.getFramePosition());
+                //System.out.println(uccellaccio.toString());
+                //System.out.println(music.clip.getFramePosition());
 
                 moveObstacles();
                 //dy += 0.05;
@@ -208,6 +309,8 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             //controllo il delta dei tempi per valutare l'attesa in millisecondi del Thread
             elapsedTime = System.nanoTime() - startTime;
             waitTime = targetTime - elapsedTime / 1000000;
+
+
             if (waitTime <= 0) {
                 waitTime = 5;
             }
@@ -236,8 +339,8 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         for (Obstacle tubo : obstacles) {
             //player passa attraverso?
             //collisioni
-            System.out.println(tubo.toString());
-            System.out.println("Interseco? " + tubo.intersects(uccellaccio.getBounds2D()));
+            //System.out.println(tubo.toString());
+            //System.out.println("Interseco? " + tubo.intersects(uccellaccio.getBounds2D()));
             if (tubo.intersects(uccellaccio)) {
                 setGameOver(true);
                 movingSpeed = 0;
@@ -256,7 +359,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
         if (!inMezzoAiTubi) {
             for (Obstacle tubo : obstacles) {
-                if (inMezzoAiTubozziOOP(tubo, uccellaccio)) {
+                if (inMezzoAiTubozzi(tubo, uccellaccio)) {
                     inMezzoAiTubi = true;
                     break;
                 }
@@ -267,7 +370,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             inMezzoAiTubi = false;
 
             for (Obstacle tubo : obstacles) {
-                if (inMezzoAiTubozziOOP(tubo, uccellaccio)) {
+                if (inMezzoAiTubozzi(tubo, uccellaccio)) {
                     inMezzoAiTubi = true;
                     break;
                 }
@@ -313,7 +416,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
                 obstacles.remove(tubo);
 
                 if (tubo.getY() == 0) {
-                    addNewObstacleOOP(false);
+                    addNewObstacle(false);
                 }
             }
         }
@@ -327,14 +430,14 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
     }
 
-    public boolean inMezzoAiTubozziOOP(Obstacle tubo, Player player) {
+    public boolean inMezzoAiTubozzi(Obstacle tubo, Player player) {
         int coda = (int) player.getX(), testa = (int) (player.getX() + player.getWidth());
         int startTubo = (int) tubo.getX(), endTubo = (int) (tubo.getX() + tubo.getWidth());
 
         return testa > startTubo && coda < endTubo;
     }
 
-    private void addNewObstacleOOP(boolean startGame) {
+    private void addNewObstacle(boolean startGame) {
         int spacingRand = rng.nextInt(250, 300);
         int width = 100;
         int widthRand = rng.nextInt(95, 110);
@@ -410,6 +513,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
         if (isGameOver() && isPlaying()) {
             g.drawString("Game Over :<", 100, HEIGHT / 2);
+            g.setColor(Color.RED.darker());
+            g.setXORMode(Color.GREEN.brighter());
+            g.drawString("Effettua un Salto per Giocare Ancora! ❤", 100, HEIGHT / 2 - 200);
+            g.setXORMode(Color.BLACK);
         }
         if (!isGameOver() && isGameStarted()) {
             g.setFont(new Font("Helvetica", Font.ITALIC, 30));
@@ -418,6 +525,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             }
             g.setFont(new Font("Helvetica", Font.BOLD, 60));
             g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+            if(isUnfairModeOn()) {
+                g.setXORMode(Color.WHITE.darker());
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Helvetica", Font.ITALIC, 50));
+                g.drawString("UNFAIR!!!", WIDTH - 100, 45);
+            }
         }
     }
 
@@ -495,12 +608,16 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
             ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+            thread.suspend();
             int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
             if (option == JOptionPane.OK_OPTION) {
                 music.clip.stop();
                 dispose();
                 System.exit(0);
+            }
+            else {
+                thread.resume();
             }
         }
 
@@ -589,16 +706,21 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     public void dispose() {
         super.dispose();
         try {
+            obstacles.clear();
+            groundBuffered = null;
+            grassBuffered = null;
+            bgBuffered = null;
+            uccellaccio = null;
+            setGameStarted(false);
+            setPlaying(false);
+            setRunning(false);
+            setRng(null);
+            removeAll();
             thread.interrupt();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        groundBuffered = null;
-        grassBuffered = null;
-        bgBuffered = null;
-        removeAll();
-        obstacles.clear();
-        uccellaccio = null;
+
     }
 }
 
