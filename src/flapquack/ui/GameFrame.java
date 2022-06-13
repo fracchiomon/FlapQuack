@@ -21,11 +21,10 @@ public class GameFrame extends JFrame implements Serializable {
 
     public static GamePanel gamePanel;
     public static HelpPanel helpPanel;
-    public static AboutPanel aboutPanel;
     public static StartPanel startPanel;
 
     class QuackMenu extends JMenuBar implements ActionListener {
-        private final static String menuText[] = {"Game", "About"};
+        private final static String menuText[] = {"Game"};
         private final static String menuItemText[] = {"Nuova Partita","Menu Principale", "Help", "Esci"};
 
         private JMenu menu[];
@@ -39,9 +38,8 @@ public class GameFrame extends JFrame implements Serializable {
             super();
             this.gameFrame = gameFrame;
             //gsm = gameStateManager;
-            menu = new JMenu[2];
+            menu = new JMenu[1];
             menuItem = new JMenuItem[4];
-            aboutMenuItem = new JMenuItem(menuText[1]);
 
 
             for (int m = 0; m < menu.length; m++) {
@@ -53,7 +51,6 @@ public class GameFrame extends JFrame implements Serializable {
                 menuItem[m].addActionListener(this);
                 menu[0].add(menuItem[m]);
             }
-            menu[1].add(aboutMenuItem);
 
         }
 
@@ -62,7 +59,7 @@ public class GameFrame extends JFrame implements Serializable {
             if (menuItem[0].equals(e.getSource())) {
                 try {
                     playerName = JOptionPane.showInputDialog(this, "Inserisci nome giocatore");
-                    Icon icon = new ImageIcon("Assets/Sprites/player.png");
+                    Icon icon = new ImageIcon("Assets/Icon/icon64.png");
                     JCheckBox unfair = new JCheckBox("Unfair Mode? (Extreme only)");
                     Object[] options = {"Easy", "Normal", "Hard", "EXTREME", unfair};
                     int difficulty = JOptionPane.showOptionDialog(null,"Seleziona la Difficoltà!","Difficulty Selection",
@@ -87,7 +84,7 @@ public class GameFrame extends JFrame implements Serializable {
             } else if(menuItem[1].equals(e.getSource())) {
 
                 try {
-                    GameFrame.this.ShowStartPanel();
+                    gameFrame.ShowStartPanel();
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException();
@@ -96,7 +93,8 @@ public class GameFrame extends JFrame implements Serializable {
             } else if (menuItem[2].equals(e.getSource())) {
                 try {
                     //gsm.getSTATES().push(new HelpState(gsm));
-                    GameFrame.this.ShowHelpPanel();
+                    gameFrame.ShowHelpPanel();
+                    gameFrame.transferFocus();
                     revalidate();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -112,8 +110,6 @@ public class GameFrame extends JFrame implements Serializable {
                 }
 
                 System.exit(0);
-            } else if (aboutMenuItem.equals(e.getSource())) {
-                GameFrame.this.ShowAboutPanel();
             }
         }
     }
@@ -156,9 +152,6 @@ public class GameFrame extends JFrame implements Serializable {
         SetCurrentPanel(new HelpPanel(this));
     }
 
-    public void ShowAboutPanel() {
-        SetCurrentPanel(new AboutPanel(this));
-    }
 
     public void ShowStartPanel() {
         SetCurrentPanel(new StartPanel(this));

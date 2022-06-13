@@ -58,17 +58,7 @@ public class HelpPanel extends BasePanel implements KeyListener {
         int yTextOffset = 40;
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0,GameFrame.WIDTH, GameFrame.HEIGHT);
-        //g.drawImage(background,GamePanel.getWIDTH()/2 + 100, GamePanel.getHEIGHT()/2 - 100, null);
-        /*for(int i = 0; i < OPTIONS.length; i++) {
-            if(i == currentSelection) {
-                g.setColor(Color.YELLOW);
-            }
-            else {
-                g.setColor(Color.WHITE);
-            }
-            g.setFont(new Font(QuackMario.getFONT(), Font.PLAIN, 48));
-            g.drawString(OPTIONS[i], GamePanel.getWIDTH()/2 - 400, 300 + i * 75 );
-        }*/
+
         for (String s : text) {
             g.setColor(Color.WHITE);
             g.setFont(new Font(FlapQuack.FONT, Font.PLAIN, 28));

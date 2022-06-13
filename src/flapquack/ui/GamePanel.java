@@ -27,11 +27,11 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     private static final int FPS = 30;
     private static final long targetTime = 1000 / FPS;
     public double movingSpeed; //velocità di scorrimento dei tubazzi - Normal
-    public final double movingSpeedNormal = 1.5; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedNormal = 2.5; //velocità di scorrimento dei tubazzi - Normal
 
-    public final double movingSpeedEasy = 1; //velocità di scorrimento dei tubazzi - Normal
-    public final double movingSpeedHard = 2.5; //velocità di scorrimento dei tubazzi - Normal
-    public final double movingSpeedExtreme = 5; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedEasy = 1.5; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedHard = 7; //velocità di scorrimento dei tubazzi - Normal
+    public final double movingSpeedExtreme = 13; //velocità di scorrimento dei tubazzi - Normal
     public int difficulty = 0; //0 - Easy | 1 - Normal | 2 - Hard | 3 - Extreme | 4 - Unfair Mode
     public boolean unfairModeOn; //Se attivato attiva la Unfair Mode, con velocità Extreme
                                         //e parametri gravità/salto modificati
@@ -227,6 +227,14 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         addNewObstacle(true);
     }
 
+    private void gravityForce() {
+        if(!isUnfairModeOn())
+            uccellaccio.setDy(uccellaccio.getDy() + 0.05);
+        else {
+            uccellaccio.setDy(uccellaccio.getDy() + 25);
+        }
+
+    }
     //Controlla lo stato del gioco e determina se Eseguire il salto fa partire una nuova partita (se siamo in GameOver)
     private void checkNewGameOrJump() {
         //se è gameOver, saltare fa iniziare una nuova partita
@@ -278,6 +286,14 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
     }
 
+    private void checkAndSetMovingSpeed() {
+        if(gameOver) {
+            movingSpeed = 0;
+        }
+        else {
+            setGameDifficulty();
+        }
+    }
     @Override
     public void run() {
         long startTime, elapsedTime, waitTime;
@@ -290,11 +306,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
                 startTime = System.currentTimeMillis();
                 //System.out.println(uccellaccio.toString());
                 //System.out.println(music.clip.getFramePosition());
-
+                checkAndSetMovingSpeed();
                 moveObstacles();
                 //dy += 0.05;
-                uccellaccio.setDy(uccellaccio.getDy() + 0.05);
-
+                gravityForce();
                 removeObstacles();
 
                 if (uccellaccio.isJumping()) uccellaccio.setY((int) (uccellaccio.getY() + uccellaccio.getDy()));
@@ -343,7 +358,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             //System.out.println("Interseco? " + tubo.intersects(uccellaccio.getBounds2D()));
             if (tubo.intersects(uccellaccio)) {
                 setGameOver(true);
-                movingSpeed = 0;
                 //Scrittura();
                 if ((int) (uccellaccio.getX()) <= (int) tubo.getX()) {
                     uccellaccio.setX((int) (tubo.getX() - uccellaccio.getWidth() - uccellaccio.getWidth() / 1.2));
@@ -384,7 +398,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             insertPlayerScoreNameInList(playerName, score);
             //Scrittura();
             uccellaccio.setAlive(false);
-            movingSpeed = 0;
             uccellaccio.setY((int) (HEIGHT - 120 - uccellaccio.getHeight() - 40));
         }
 
@@ -393,7 +406,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             setGameOver(true);
             insertPlayerScoreNameInList(playerName, score);
 
-            movingSpeed = 0;
             //Scrittura();
             uccellaccio.setAlive(false);
             uccellaccio.setDy(0);
@@ -403,7 +415,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         if (uccellaccio.getY() <= 0) {
             setGameOver(true);
             insertPlayerScoreNameInList(playerName, score);
-            movingSpeed = 0;
             uccellaccio.setAlive(false);
             uccellaccio.setY(0);
         }
@@ -438,10 +449,19 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     }
 
     private void addNewObstacle(boolean startGame) {
-        int spacingRand = rng.nextInt(250, 300);
+        int spacingRand;
+
         int width = 100;
         int widthRand = rng.nextInt(95, 110);
         int height = rng.nextInt(50, 300);
+        if(difficulty == 3 || difficulty == 2 ||isUnfairModeOn())
+        {
+            spacingRand = rng.nextInt(310, 380);
+            height = rng.nextInt(80, 310);
+        }
+        else {
+            spacingRand = rng.nextInt(285, 320);
+        }
 
         if (startGame) {
             obstacles.add(new Obstacle(WIDTH + widthRand + obstacles.size() * spacingRand, HEIGHT - height - 120, widthRand, height, false));
@@ -619,6 +639,15 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             else {
                 thread.resume();
             }
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_M) {
+            dispose();
+            gameFrame.ShowStartPanel();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_N) {
+            startGame();
         }
 
         //debug: stop e resume del gioco

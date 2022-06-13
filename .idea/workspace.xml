@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="UPDATE: GESTIONE PANNELLI IN CORSO&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà, inserimento nome &amp; High-Scores.">
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Pulizia e Commento del Codice in corso. Gestione Pannelli in corso.&#10;&#10;TODO: qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, High-Scores.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/HighScores.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Data/HighScores.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/AboutPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/AboutPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

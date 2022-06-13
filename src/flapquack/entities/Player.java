@@ -24,13 +24,13 @@ public class Player extends Rectangle2D implements Serializable {
     private final int X_DEFAULT = MAP_BORDER_DX / 2 - 100, Y_DEFAULT = MAP_BORDER_DOWN / 2 - 10;
     private final int WIDTH_DEFAULT = 30, HEIGHT_DEFAULT = 30;
     private double maxFallSpeed = 2.3;
-    private final double maxFallSpeedUnfair = 0.7;
+    private final double maxFallSpeedUnfair = 5;
     private double jumpStart = -1.8;
-    private final double jumpStartUnfair = -1.2;
+    private final double jumpStartUnfair = -0.05;
     private double fallSpeed = 0.04;
-    private final double fallSpeedUnfair = 0.2;
+    private final double fallSpeedUnfair = 10;
     private double stopJumpSpeed = 0.3;
-    private final double stopJumpSpeedUnfair = 0.5;
+    private final double stopJumpSpeedUnfair = 10;
 
     //Location del file Immagine
     //private final Image sprite;
@@ -71,7 +71,7 @@ public class Player extends Rectangle2D implements Serializable {
     public Player(String playerName, int x, int y, int width, int height) {
         super();
         setPlayerName(playerName);
-        setDy(-3.5);
+        setDy(-1.5);
         setX(x);
         setY(y);
         setWidth(width);
@@ -93,7 +93,7 @@ public class Player extends Rectangle2D implements Serializable {
         super();
         setPlayerName(playerName);
         unfairMode(unfairCheck);
-        setDy(-3.5);
+        setDy(-1.5);
         setX(x);
         setY(y);
         setWidth(width);
