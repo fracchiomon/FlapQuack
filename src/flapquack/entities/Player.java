@@ -35,7 +35,8 @@ public class Player extends Rectangle2D implements Serializable {
     //Location del file Immagine
     //private final Image sprite;
     private static BufferedImage spriteBuffered;
-    private final String spritePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/player.png";
+    private final String spritePath = "Assets/Sprites/player.png";
+    private final String spriteAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/player.png";
 
     //spostamento verticale
     private double dy;

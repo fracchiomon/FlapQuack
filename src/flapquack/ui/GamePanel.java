@@ -8,10 +8,7 @@ import flapquack.game.SoundFX;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -43,7 +40,9 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     protected final ArrayList<Integer> scores = new ArrayList<>();
     public final Music music = GameFrame.getSong1();
     private final Thread thread;
-    private final SoundFX secretFX = new SoundFX("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sounds/honk.wav");
+    private final String secretFXAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sounds/honk.wav";
+    private final String secretFXPath = "Assets/Sounds/honk.wav";
+    private final SoundFX secretFX = new SoundFX(secretFXPath);
     public boolean playing;
     private boolean gameOver, gameStarted;
     protected boolean inMezzoAiTubi = false;
@@ -129,12 +128,15 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         bgBuffered = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        String bg_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
+        String bg_Path = "Assets/Background/bg.png";
+        String bgAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
         try {
             bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
+            String ground_Path = "Assets/Sprites/brick.png";
+            //String groundAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
             groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
+            String grass_Path = "Assets/Sprites/grass.png";
+            //String grassAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
             grassBuffered = ImageIO.read(new File(grass_Path));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -178,6 +180,13 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     public void setPlaying(boolean playing) {
         this.playing = playing;
     }
+    Integer currTime = 0;
+    public Timer time = new Timer(1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            currTime++;
+        }
+    });
 
 
     public void init() {
@@ -200,19 +209,20 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         music.clip.setFramePosition(1591000);
         music.clip.start();
         music.clip.setLoopPoints(1590000, loopEnd);
-        startGame();
+        startNewGame();
         thread.start();
 
     }
 
     //inizializza i primi Ostacoli, il punteggio e il Player
-    public void startGame() {
+    public void startNewGame() {
         //dy = -3.5;
         //seed del Random Generator
         rng.setSeed(System.nanoTime());
         //movingSpeed = 1.5;
         score = 0;
         obstacles.clear();
+        setGameDifficulty();
         if (!isUnfairModeOn()) {
             uccellaccio = new Player(playerName);
         }
@@ -225,6 +235,8 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         addNewObstacle(true);
         addNewObstacle(true);
         addNewObstacle(true);
+        time.start();
+
     }
 
     private void gravityForce() {
@@ -235,6 +247,15 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
 
     }
+
+    private void selectDifficulty() {
+        JCheckBox unfair = new JCheckBox("Unfair Mode? (Extreme only)");
+        Object[] options = {"Easy", "Normal", "Hard", "EXTREME", unfair};
+        difficulty = JOptionPane.showOptionDialog(null, "Seleziona la Difficoltà!", "Difficulty Selection",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, img, options, options[1]);
+
+    }
+
     //Controlla lo stato del gioco e determina se Eseguire il salto fa partire una nuova partita (se siamo in GameOver)
     private void checkNewGameOrJump() {
         //se è gameOver, saltare fa iniziare una nuova partita
@@ -243,8 +264,9 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
                 int scelta = JOptionPane.showConfirmDialog(this, "Nuovo Giocatore?", "Continua?", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (scelta == JOptionPane.YES_OPTION) {
                     nuovoNome();
+                    selectDifficulty();
                 }
-                startGame();
+                startNewGame();
                 //jumping = true;
                 uccellaccio.setDy(0);
                 uccellaccio.setJumping(true);
@@ -358,6 +380,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             //System.out.println("Interseco? " + tubo.intersects(uccellaccio.getBounds2D()));
             if (tubo.intersects(uccellaccio)) {
                 setGameOver(true);
+
+                time.stop();
+                currTime = 0;
+
                 //Scrittura();
                 if ((int) (uccellaccio.getX()) <= (int) tubo.getX()) {
                     uccellaccio.setX((int) (tubo.getX() - uccellaccio.getWidth() - uccellaccio.getWidth() / 1.2));
@@ -395,6 +421,11 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         //collisioni terra/cielo OOP
         if (uccellaccio.getY() >= HEIGHT - 120 - uccellaccio.getHeight() - 40) {
             setGameOver(true);
+
+            time.stop();
+            currTime = 0;
+
+
             insertPlayerScoreNameInList(playerName, score);
             //Scrittura();
             uccellaccio.setAlive(false);
@@ -404,6 +435,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         //collisione terra includendo lo scostamento dy - OOP
         if (uccellaccio.getY() + uccellaccio.getDy() >= HEIGHT - 120 - uccellaccio.getHeight() - 40) {
             setGameOver(true);
+
+            time.stop();
+            currTime = 0;
+
             insertPlayerScoreNameInList(playerName, score);
 
             //Scrittura();
@@ -414,6 +449,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
         if (uccellaccio.getY() <= 0) {
             setGameOver(true);
+
+            time.stop();
+            currTime = 0;
+
             insertPlayerScoreNameInList(playerName, score);
             uccellaccio.setAlive(false);
             uccellaccio.setY(0);
@@ -532,7 +571,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             g.drawString("Clicca o Premi 'Spazio' per Giocare", 150, HEIGHT / 2 - 50);
         }
         if (isGameOver() && isPlaying()) {
-            g.drawString("Game Over :<", 100, HEIGHT / 2);
+            g.drawString("Game Over :<", WIDTH/2 - 200, HEIGHT / 2);
             g.setColor(Color.RED.darker());
             g.setXORMode(Color.GREEN.brighter());
             g.drawString("Effettua un Salto per Giocare Ancora! ❤", 100, HEIGHT / 2 - 200);
@@ -545,10 +584,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             }
             g.setFont(new Font("Helvetica", Font.BOLD, 60));
             g.drawString(String.valueOf(score), WIDTH / 2 - 25, 100);
+            g.setFont(new Font("Helvetica", Font.BOLD, 24));
+            g.drawString(String.valueOf(currTime) + " secondo/i", WIDTH - 150, HEIGHT - 75);
             if(isUnfairModeOn()) {
-                g.setXORMode(Color.WHITE.darker());
-                g.setColor(Color.BLACK);
                 g.setFont(new Font("Helvetica", Font.ITALIC, 50));
+                g.setColor(Color.BLUE);
+                g.setXORMode(Color.RED.darker());
                 g.drawString("UNFAIR!!!", WIDTH - 100, 45);
             }
         }
@@ -627,7 +668,6 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
         }
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            ImageIcon img = new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Icon/icon64.png");
             thread.suspend();
             int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
@@ -642,12 +682,52 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         }
 
         if(e.getKeyCode() == KeyEvent.VK_M) {
-            dispose();
-            gameFrame.ShowStartPanel();
+            try {
+                pauseFrame = music.clip.getFramePosition();
+                music.clip.stop();
+                thread.suspend();
+                time.stop();
+
+                int scelta = JOptionPane.showConfirmDialog(this,"Vuoi tornare al menu principale?", "Uscita", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, img);
+                if(scelta == JOptionPane.YES_OPTION) {
+                    currTime = 0;
+                    dispose();
+                    gameFrame.ShowStartPanel();
+                }
+                else {
+                    thread.resume();
+                    time.start();
+                    music.clip.setFramePosition(pauseFrame);
+                    music.clip.start();
+                }
+            } catch (IllegalThreadStateException ex) {
+                ex.printStackTrace();
+            }
+
         }
 
         if(e.getKeyCode() == KeyEvent.VK_N) {
-            startGame();
+            try {
+                pauseFrame = music.clip.getFramePosition();
+                music.clip.stop();
+                time.stop();
+                thread.suspend();
+                int scelta = JOptionPane.showConfirmDialog(this,"Nuova Partita?", "New Game", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, img);
+                if(scelta == JOptionPane.YES_OPTION) {
+                    currTime = 0;
+                    selectDifficulty();
+                    startNewGame();
+                }
+                else {
+                    thread.resume();
+                    time.start();
+                    music.clip.setFramePosition(pauseFrame);
+                    music.clip.start();
+                }
+            } catch (IllegalThreadStateException ex) {
+                ex.printStackTrace();
+            }
+
         }
 
         //debug: stop e resume del gioco

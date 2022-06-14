@@ -22,8 +22,10 @@ public class Obstacle extends Rectangle2D implements Serializable {
     private final Image spriteUpsideDown;*/
     private static BufferedImage spriteBuffered = null;
     private static BufferedImage spriteUpsideDownBuffered = null;
-    private final String spritePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/pipe.png";
-    private final String spriteUpsideDownPath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/pipe_upsidedown.png";
+    private final String spritePath = "Assets/Sprites/pipe.png";
+    private final String spriteAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/pipe.png";
+    private final String spriteUpsideDownPath = "Assets/Sprites/pipe_upsidedown.png";
+    private final String spriteUpsideDownAbsolutePath = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/pipe_upsidedown.png";
     private final boolean reverse;
 
     //------------------------------------------------------------//
