@@ -102,7 +102,7 @@ public class GameFrame extends JFrame implements Serializable {
             } else if (menuItem[3].equals(e.getSource())) {
                 //gsm.getSTATES().clear();
 
-                ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+                ImageIcon img = new ImageIcon("/Assets/Icon/icon64.png");
                 int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
                 if (option == JOptionPane.OK_OPTION) {

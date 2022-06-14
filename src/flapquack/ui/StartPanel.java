@@ -51,11 +51,6 @@ public class StartPanel extends BasePanel {
         grabFocus();
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         //bg = new ImageIcon("Assets/Background/bg.png").getImage();
-        try {
-            bg = ImageIO.read(new File("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png"));
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
         setVisible(true);
 
 
@@ -64,11 +59,11 @@ public class StartPanel extends BasePanel {
             public void actionPerformed(ActionEvent e) {
                 playerName = JOptionPane.showInputDialog(StartPanel.this, "Inserisci il tuo nome", "Nuovo Giocatore", JOptionPane.PLAIN_MESSAGE);
                 //System.out.println(playerName);
-                ImageIcon icon = new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/player.png");
+
                 JCheckBox unfair = new JCheckBox("Unfair Mode? (Extreme only)");
                 Object[] options = {"Easy", "Normal", "Hard", "EXTREME", unfair};
                 int difficulty = JOptionPane.showOptionDialog(null, "Seleziona la Difficoltà!", "Difficulty Selection",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, icon, options, options[1]);
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, img, options, options[1]);
                 switch (difficulty) {
                     case 0 -> gameFrame.ShowGamePanel(playerName, 0, false);
                     case 1 -> gameFrame.ShowGamePanel(playerName, 1, false);
@@ -93,7 +88,6 @@ public class StartPanel extends BasePanel {
         esciButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon img = new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Icon/icon64.png");
                 int scelta = JOptionPane.showConfirmDialog(null, "Vuoi uscire dal gioco?", "Conferma Uscita"
                         , JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, img);
                 if (scelta == JOptionPane.OK_OPTION) {
@@ -106,7 +100,7 @@ public class StartPanel extends BasePanel {
             public void keyPressed(KeyEvent e) {
                 if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SLASH) {
                     int scelta = JOptionPane.showConfirmDialog(null, "Vuoi uscire dal gioco?", "Conferma Uscita"
-                            , JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                            , JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
                     if (scelta == JOptionPane.OK_OPTION) {
                         System.exit(0);
                     }
@@ -232,7 +226,7 @@ public class StartPanel extends BasePanel {
     public void keyPressed(KeyEvent e) {
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SLASH) {
             int scelta = JOptionPane.showConfirmDialog(null, "Vuoi uscire dal gioco?", "Conferma Uscita"
-                    , JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    , JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
             if (scelta == JOptionPane.OK_OPTION) {
                 System.exit(0);
             }

@@ -9,20 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="Pulizia e Commento del Codice in corso. Gestione Pannelli in corso.&#10;&#10;TODO: qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, High-Scores.">
-      <change afterPath="$PROJECT_DIR$/Assets/Icon/icon64.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Sprites/player.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+    <list default="true" id="b591c88e-07d4-4b3c-b6bb-81979b604506" name="Changes" comment="FINE. Mancano SoundFx e HighScores (iniziati). MAncano animazioni. Rimosso About dalla menubar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/HighScores.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Data/HighScores.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Obstacle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/AboutPanel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/BasePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/BasePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GameFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/HelpPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/flapquack/ui/MainPanel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/flapquack/ui/StartPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,22 +50,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "true",
-    "Repository.Attach.Sources": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gant"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/src/game&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gant&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/game" />
@@ -192,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655047507895</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="FINE. Mancano SoundFx e HighScores (iniziati). MAncano animazioni. Rimosso About dalla menubar">
+      <created>1655203242772</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1655203242772</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -218,7 +219,8 @@
     <MESSAGE value="più o meno le immagini ci sono. piccolo bug non invasivo il fatto che con le immagini, gli ostacoli a bordo SX della mappa rallentano prima di scomparire.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli." />
     <MESSAGE value="Grafica basilare implementata.&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà e gestione dei pannelli, inserimento nome &amp; High-Scores." />
     <MESSAGE value="UPDATE: GESTIONE PANNELLI IN CORSO&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà, inserimento nome &amp; High-Scores." />
-    <option name="LAST_COMMIT_MESSAGE" value="UPDATE: GESTIONE PANNELLI IN CORSO&#10;&#10;TODO: sound fx e qualche sprazzo di animazione del player&#10;&#10;TODO-MAGARI: selezione difficoltà, inserimento nome &amp; High-Scores." />
+    <MESSAGE value="FINE. Mancano SoundFx e HighScores (iniziati). MAncano animazioni. Rimosso About dalla menubar" />
+    <option name="LAST_COMMIT_MESSAGE" value="FINE. Mancano SoundFx e HighScores (iniziati). MAncano animazioni. Rimosso About dalla menubar" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
