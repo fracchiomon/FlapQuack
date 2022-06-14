@@ -2,8 +2,9 @@ package flapquack.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 
-public abstract class BasePanel extends JPanel {
+public abstract class BasePanel extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
     protected GameFrame gameFrame;

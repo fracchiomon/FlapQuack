@@ -165,8 +165,8 @@ public class GameFrame extends JFrame implements Serializable {
         setResizable(false);
         setTitle(title);
         menu = new QuackMenu(this);
-        song1 = new Music("Assets/Music/monty_on_the_run.wav");
-
+        song1 = new Music("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Music/monty_on_the_run.wav");
+        setIconImage(new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Icon/icon64.png").getImage());
         setJMenuBar(menu);
         ShowStartPanel();
 

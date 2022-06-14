@@ -36,7 +36,7 @@ public class HelpPanel extends BasePanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_BACK_SLASH) {
-            ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+            ImageIcon img = new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Icon/icon64.png");
             int scelta = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Conferma Uscita"
                     , JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, img);
             if (scelta == JOptionPane.OK_OPTION) {

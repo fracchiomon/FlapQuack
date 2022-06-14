@@ -43,7 +43,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
     protected final ArrayList<Integer> scores = new ArrayList<>();
     public final Music music = GameFrame.getSong1();
     private final Thread thread;
-    private final SoundFX secretFX = new SoundFX("Assets/Sounds/honk.wav");
+    private final SoundFX secretFX = new SoundFX("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sounds/honk.wav");
     public boolean playing;
     private boolean gameOver, gameStarted;
     protected boolean inMezzoAiTubi = false;
@@ -61,12 +61,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         init();
-        String bg_Path = "Assets/Background/bg.png";
+        String bg_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
         try {
             bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "Assets/Sprites/brick.png";
+            String ground_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
             groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "Assets/Sprites/grass.png";
+            String grass_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
             grassBuffered = ImageIO.read(new File(grass_Path));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,12 +81,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         unfairCheck = unfair;
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
-        String bg_Path = "Assets/Background/bg.png";
+        String bg_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
         try {
             bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "Assets/Sprites/brick.png";
+            String ground_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
             groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "Assets/Sprites/grass.png";
+            String grass_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
             grassBuffered = ImageIO.read(new File(grass_Path));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -106,12 +106,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         bgBuffered = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         init();
-        String bg_Path = "Assets/Background/bg.png";
+        String bg_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
         try {
             bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "Assets/Sprites/brick.png";
+            String ground_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
             groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "Assets/Sprites/grass.png";
+            String grass_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
             grassBuffered = ImageIO.read(new File(grass_Path));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -129,12 +129,12 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         thread = new Thread(this);
         setPreferredSize(new Dimension(GameFrame.WIDTH, GameFrame.HEIGHT));
         bgBuffered = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        String bg_Path = "Assets/Background/bg.png";
+        String bg_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Background/bg.png";
         try {
             bgBuffered = ImageIO.read(new File(bg_Path));
-            String ground_Path = "Assets/Sprites/brick.png";
+            String ground_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/brick.png";
             groundBuffered = ImageIO.read(new File(ground_Path));
-            String grass_Path = "Assets/Sprites/grass.png";
+            String grass_Path = "/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Sprites/grass.png";
             grassBuffered = ImageIO.read(new File(grass_Path));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -347,7 +347,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
         } catch (IOException f) {
             f.printStackTrace();
         }
-        System.out.println(PlayerScores);
+//        System.out.println(PlayerScores);
     }
 
     private void checkCollisionsOrRaiseScore() {
@@ -619,7 +619,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("premuto tasto: " + e.getKeyCode() + e.getKeyChar());
+//        System.out.println("premuto tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
             {
                 checkNewGameOrJump();
@@ -627,7 +627,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
         }
         if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            ImageIcon img = new ImageIcon("Assets/Icon/icon64.png");
+            ImageIcon img = new ImageIcon("/Users/fracchiomon/Documents/STM-TOR-VERGHY/Java/FlapQuack/Assets/Icon/icon64.png");
             thread.suspend();
             int option = JOptionPane.showConfirmDialog(this, "Vuoi uscire dal gioco?", "Uscita", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, img);
 
@@ -667,10 +667,10 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("rilasciato tasto: " + e.getKeyCode() + e.getKeyChar());
+//        System.out.println("rilasciato tasto: " + e.getKeyCode() + e.getKeyChar());
         if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP)) {
             //setJumping(false);
-            System.out.println("Valore dy: " + uccellaccio.getDy());
+//            System.out.println("Valore dy: " + uccellaccio.getDy());
         }
 
     }
@@ -723,7 +723,7 @@ public class GamePanel extends BasePanel implements Runnable, Serializable, Mous
             f.printStackTrace();
         }
 
-        System.out.println(PlayerScores.keys());
+        //System.out.println(PlayerScores.keys());
     }
 
     public void HighScores() {
